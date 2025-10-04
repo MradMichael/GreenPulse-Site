@@ -1082,25 +1082,27 @@
         });
 
         // Zoom logic
-        function updateScale(newScale) {
-            scale = Math.min(maxScale, Math.max(minScale, newScale));
-
-            const style = window.getComputedStyle(earthImage);
-            const matrix = new WebKitCSSMatrix(style.transform);
-            let currentX = matrix.e || 0;
-            let currentY = matrix.f || 0;
-
-            // Simple reset to center for basic zoom implementation
-            if (scale === 1.0) {
-                currentX = 0;
-                currentY = 0;
-            }
-
-            m = scale(${scale}) translate(${currentX}px, ${currentY}px);
-            const zoneOverlay = document.querySelector('.zone-overlay');
-            zoneOverlay.style.transform = scale(${scale}) translate(${currentX}px, ${currentY}px);
-
+       function updateScale(newScale) {
+          scale = Math.min(maxScale, Math.max(minScale, newScale));
+        
+          const style = window.getComputedStyle(earthImage);
+          const matrix = new WebKitCSSMatrix(style.transform);
+          let currentX = matrix.e || 0;
+          let currentY = matrix.f || 0;
+        
+          if (scale === 1.0) {
+            currentX = 0;
+            currentY = 0;
+          }
+        
+          earthImage.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+        
+          const zoneOverlay = document.querySelector('.zone-overlay');
+          if (zoneOverlay) {
+            zoneOverlay.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+          }
         }
+
 
         document.getElementById('zoomIn').addEventListener('click', () => updateScale(scale + 0.5));
         document.getElementById('zoomOut').addEventListener('click', () => updateScale(scale - 0.5));
