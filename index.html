@@ -1065,8 +1065,10 @@
 
                 // Easiest solution: Apply the transform to the parent container of the zones as well.
                 const zoneOverlay = document.querySelector('.zone-overlay');
-                zoneOverlay.style.transform = scale(${scale}) translate(${newX}px, ${newY}px);
-                zoneOverlay.style.transition = 'transform 0.05s ease-out';
+                if (zoneOverlay) {
+                  zoneOverlay.style.transform =
+                    'scale(' + scale + ') translate(' + newX + 'px, ' + newY + 'px)';
+                  zoneOverlay.style.transition = 'transform 0.05s ease-out';
             });
         });
 
