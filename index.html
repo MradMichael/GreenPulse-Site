@@ -939,9 +939,9 @@
             stressFill.style.width = `${stress}%`;
             stressFill.style.background = 'linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%)';
             stressFill.style.filter = `hue-rotate(${(100 - stress) * 1.2}deg)`;
-            document.getElementById('stressPercent').innerHTML =
-              `<strong>${stress}% Stress Level</strong> <br> Status: <span style="font-family:'Exo 2', sans-serif;">${healthStatus}</span>`;
-            
+            document.getElementById('stressPercent').innerHTML = `<strong>${stress}% Stress Level</strong><br> 
+            Status: <span style="font-family:'Exo 2', sans-serif;">${healthStatus}</span>`;
+
             document.getElementById('plantHealth').textContent =
               `Dominant Type: ${data.dominantVegetation.icon} ${data.dominantVegetation.type}`;
             
