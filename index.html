@@ -935,37 +935,34 @@
 
             // 1. Zone Name
             document.getElementById('zoneName').textContent = `🛰 ${data.name}`;
-
-
-            // 2. Stress Analysis
-            const stressFill = document.getElementById('stressFill');
-            stressFill.style.width = ${stress}%;
-            stressFill.style.background = linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%); // Keep gradient for color scale
-            stressFill.style.filter = hue-rotate(${(100 - stress) * 1.2}deg); // Adjust color based on stress
-            document.getElementById('stressPercent').innerHTML = **${stress}% Stress Level** <br> Status: <span style="font-family:'Exo 2', sans-serif;">${healthStatus}</span>;
-
-            // 3. Biosphere Health Matrix
-            document.getElementById('plantHealth').textContent = Dominant Type: ${data.dominantVegetation.icon} ${data.dominantVegetation.type};
-            const plantLegendHtml = data.plants.map(p => <div class="plant-item">${p}</div>).join('');
+            
+            stressFill.style.width = `${stress}%`;
+            stressFill.style.background = 'linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%)';
+            stressFill.style.filter = `hue-rotate(${(100 - stress) * 1.2}deg)`;
+            document.getElementById('stressPercent').innerHTML =
+              `<strong>${stress}% Stress Level</strong> <br> Status: <span style="font-family:'Exo 2', sans-serif;">${healthStatus}</span>`;
+            
+            document.getElementById('plantHealth').textContent =
+              `Dominant Type: ${data.dominantVegetation.icon} ${data.dominantVegetation.type}`;
+            
+            const plantLegendHtml = data.plants.map(p => `<div class="plant-item">${p}</div>`).join('');
             document.getElementById('plantLegend').innerHTML = plantLegendHtml;
-
-            // 4. Mission Recommendations
-            const suggestionsHtml = data.suggestions.map(s => <li>${s}</li>).join('');
+            
+            const suggestionsHtml = data.suggestions.map(s => `<li>${s}</li>`).join('');
             document.getElementById('suggestions').innerHTML = suggestionsHtml;
-
-            // 5. Predictive Analysis (Dynamic EONET Data)
+            
             const predictionEl = document.getElementById('prediction');
-            predictionEl.className = prediction ${cssClass};
+            predictionEl.className = `prediction ${cssClass}`;
             predictionEl.innerHTML = `
-                <p style="color: #ffffff;">
-                    <strong>CURRENT ALERT: ${eventCount} Active Event(s) Detected!</strong>
-                </p>
-                <p style="font-size: 11px;">
-                    *Most Severe Incident:* ${mostSevereEvent}
-                </p>
-                <p style="font-size: 11px; opacity: 0.8;">
-                    Events are sourced from the NASA EONET API and indicate real-time natural hazards.
-                </p>
+              <p style="color: #ffffff;">
+                <strong>CURRENT ALERT: ${eventCount} Active Event(s) Detected!</strong>
+              </p>
+              <p style="font-size: 11px;">
+                *Most Severe Incident:* ${mostSevereEvent}
+              </p>
+              <p style="font-size: 11px; opacity: 0.8;">
+                Events are sourced from the NASA EONET API and indicate real-time natural hazards.
+              </p>
             `;
 
             sidebar.classList.add('active');
