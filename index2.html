@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Earth Climate Observatory - Interactive Mission Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* ... (Your existing CSS here - NO CHANGES NEEDED IN CSS) ... */
+
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Exo 2', sans-serif;
+            background: radial-gradient(ellipse at center, #0f1419 0%, #000000 70%);
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated starfield background */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 20s linear infinite;
+        }
+
+        @keyframes sparkle {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-100px); }
+        }
+
+        /* Beautiful floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff00;
+            animation: float 15s infinite linear;
+        }
+
+        .particle:nth-child(2n) {
+            background: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+            animation-duration: 12s;
+        }
+
+        .particle:nth-child(3n) {
+            background: #ffffff;
+            box-shadow: 0 0 8px #ffffff;
+            animation-duration: 18s;
+            width: 2px;
+            height: 2px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(45deg, rgba(0,100,200,0.1) 0%, rgba(0,50,150,0.1) 100%);
+        }
+
+        .map-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #001122 0%, #000000 100%);
+            border: 2px solid #90ff90;
+            border-radius: 15px;
+            margin: 10px;
+            box-shadow:
+                0 0 30px rgba(144,255,144,0.3),
+                inset 0 0 30px rgba(0,100,50,0.1);
+        }
+
+        .earth-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: grab;
+            transition: transform 0.3s ease;
+            filter: brightness(1.2) contrast(1.1) saturate(1.3);
+        }
+
+        .earth-image:active {
+            cursor: grabbing;
+        }
+
+        .zone-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .zone {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.8);
+            backdrop-filter: blur(2px);
+            animation: pulse 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255,255,255,0.6); }
+        }
+
+        .zone:hover {
+            transform: scale(1.2) !important;
+            box-shadow: 0 0 30px rgba(0,255,255,0.8) !important;
+            border-color: #00ffff;
+        }
+
+        .zone.danger {
+            background: radial-gradient(circle, rgba(255,0,0,0.8) 0%, rgba(255,100,100,0.4) 100%);
+            box-shadow: 0 0 15px rgba(255,0,0,0.6);
+            border-color: rgba(255,100,100,0.9);
+        }
+
+        .zone.moderate {
+            background: radial-gradient(circle, rgba(255,165,0,0.8) 0%, rgba(255,200,100,0.4) 100%);
+            box-shadow: 0 0 15px rgba(255,165,0,0.6);
+            border-color: rgba(255,200,100,0.9);
+        }
+
+        .zone.healthy {
+            background: radial-gradient(circle, rgba(0,255,0,0.8) 0%, rgba(100,255,100,0.4) 100%);
+            box-shadow: 0 0 15px rgba(0,255,0,0.6);
+            border-color: rgba(100,255,100,0.9);
+        }
+
+        .simple-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            font-weight: 900;
+            color: #90ff90;
+            text-shadow: 0 0 10px rgba(144,255,144,0.5);
+            letter-spacing: 3px;
+            z-index: 150;
+            background: rgba(20,40,20,0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid #90ff90;
+            box-shadow: 0 0 20px rgba(144,255,144,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .controls {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            background: linear-gradient(135deg, rgba(0,40,20,0.95) 0%, rgba(0,100,50,0.9) 100%);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #90ff90;
+            box-shadow:
+                0 0 20px rgba(144,255,144,0.3),
+                inset 0 0 20px rgba(0,100,50,0.1);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            width: 200px;
+        }
+
+        .controls h3 {
+            font-family: 'Orbitron', monospace;
+            color: #90ff90;
+            margin: 0 0 10px 0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(144,255,144,0.5);
+        }
+
+        .time-slider {
+            width: 160px;
+            margin: 10px 0;
+            background: transparent;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #ff0000 0%, #ffff00 50%, #00ff00 100%);
+            outline: none;
+        }
+
+        .time-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #90ff90;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(144,255,144,0.8);
+        }
+
+        .year-display {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: #90ff90;
+            text-shadow: 0 0 5px rgba(0,255,0,0.5);
+            margin-top: 8px;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .zoom-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(0,100,50,0.8) 0%, rgba(0,150,75,0.6) 100%);
+            border: 2px solid #90ff90;
+            border-radius: 50%;
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(144,255,144,0.3);
+        }
+
+        .zoom-btn:hover {
+            background: linear-gradient(135deg, rgba(0,150,75,0.9) 0%, rgba(0,200,100,0.7) 100%);
+            box-shadow: 0 0 25px rgba(144,255,144,0.6);
+            transform: scale(1.1);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, rgba(0,30,10,0.95) 0%, rgba(0,60,30,0.9) 100%);
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            box-shadow: -5px 0 30px rgba(144,255,144,0.2);
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+            border-left: 2px solid #90ff90;
+            position: relative;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(144,255,144,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(144,255,144,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar h2 {
+            font-family: 'Orbitron', monospace;
+            color: #90ff90;
+            margin-bottom: 25px;
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(144,255,144,0.5);
+            border-bottom: 2px solid #90ff90;
+            padding-bottom: 10px;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0,100,50,0.3) 0%, rgba(0,50,20,0.5) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(144,255,144,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .info-section h3 {
+            font-family: 'Orbitron', monospace;
+            margin: 0 0 15px 0;
+            color: #ffffff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stress-meter {
+            width: 100%;
+            height: 18px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 1px solid #00ff00;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .stress-fill {
+            height: 100%;
+            transition: width 0.8s ease;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%);
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        .plant-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .plant-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #ffffff;
+            background: rgba(0,200,100,0.2);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(0,255,0,0.2);
+        }
+
+        .vegetation-icon {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+
+        .dominant-vegetation {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0,255,150,0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(144,255,144,0.3);
+        }
+
+        .dominant-vegetation .icon {
+            font-size: 16px;
+        }
+
+        .dominant-vegetation .label {
+            font-family: 'Orbitron', monospace;
+            font-size: 11px;
+            color: #90ff90;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, rgba(0,40,20,0.95) 0%, rgba(0,100,50,0.9) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #00ff00;
+            box-shadow: 0 0 20px rgba(0,255,0,0.3);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .legend h4 {
+            font-family: 'Orbitron', monospace;
+            color: #90ff90;
+            margin: 0 0 15px 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0;
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        .legend-color {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,100,50,0.8);
+            border: 2px solid #00ff00;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            color: #90ff90;
+            font-family: 'Orbitron', monospace;
+            transition: all 0.3s ease;
+            z-index: 300;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(0,255,0,0.3);
+        }
+
+        .close-btn:hover {
+            color: #ffffff;
+            background: rgba(0,200,100,0.9);
+            text-shadow: 0 0 10px rgba(0,255,0,0.8);
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0,255,0,0.6);
+        }
+
+        .prediction {
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prediction::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: scan 3s infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .prediction.positive {
+            background: linear-gradient(135deg, rgba(0,255,0,0.2) 0%, rgba(0,150,0,0.1) 100%);
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0,255,0,0.2);
+        }
+
+        .prediction.negative {
+            background: linear-gradient(135deg, rgba(255,0,0,0.2) 0%, rgba(150,0,0,0.1) 100%);
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255,0,0,0.2);
+        }
+
+        .satellite-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #90ff90;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        .data-stream {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-family: 'Orbitron', monospace;
+            font-size: 10px;
+            color: #90ff90;
+            opacity: 0.7;
+        }
+
+        /* Holographic effect for zones */
+        .zone::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: hologram 4s linear infinite;
+        }
+
+        @keyframes hologram {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="starfield"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="simple-title">🌍 GREEN PULSE</div>
+
+    <div class="container">
+        <div class="map-container">
+            <img src="https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg"
+                 alt="NASA Earth Satellite View"
+                 class="earth-image"
+                 id="earthImage"
+                 onerror="this.src=''; this.alt='Loading satellite imagery...'; this.style.background='linear-gradient(45deg, #001122 0%, #003366 100%)'; this.style.display='block';">
+
+            <div class="zone-overlay">
+                <div class="zone healthy" id="zone1" style="top: 15%; left: 15%; width: 35px; height: 35px;" data-zone="North American Forests" data-base-size="35" data-lat="50" data-lon="-100">🌲</div>
+                <div class="zone moderate" id="zone2" style="top: 45%; left: 25%; width: 40px; height: 40px;" data-zone="Amazon Rainforest" data-base-size="40" data-lat="-5" data-lon="-60">🌳</div>
+                <div class="zone danger" id="zone3" style="top: 35%; left: 48%; width: 45px; height: 45px;" data-zone="Sahara Desert" data-base-size="45" data-lat="20" data-lon="20">🌵</div>
+                <div class="zone healthy" id="zone4" style="top: 25%; left: 48%; width: 25px; height: 25px;" data-zone="European Forests" data-base-size="25" data-lat="50" data-lon="10">🌳</div>
+                <div class="zone moderate" id="zone5" style="top: 18%; left: 60%; width: 55px; height: 55px;" data-zone="Siberian Taiga" data-base-size="55" data-lat="60" data-lon="100">🌲</div>
+                <div class="zone danger" id="zone6" style="top: 40%; left: 75%; width: 30px; height: 30px;" data-zone="SE Asian Rainforests" data-base-size="30" data-lat="10" data-lon="100">🌴</div>
+                <div class="zone danger" id="zone7" style="top: 65%; left: 75%; width: 38px; height: 38px;" data-zone="Australian Outback" data-base-size="38" data-lat="-25" data-lon="135">🌿</div>
+                <div class="zone moderate" id="zone8" style="top: 45%; left: 50%; width: 42px; height: 42px;" data-zone="African Savanna" data-base-size="42" data-lat="5" data-lon="30">🌾</div>
+                <div class="zone moderate" id="zone9" style="top: 8%; left: 20%; width: 50px; height: 25px;" data-zone="Arctic Tundra" data-base-size="50" data-lat="70" data-lon="-150">❄</div>
+
+            </div>
+
+            <div class="satellite-indicator">🛰 LANDSAT-9 ACTIVE</div>
+            <div class="data-stream">DATA STREAM: 847.2 MB/s</div>
+
+            <div class="controls" id="controls" style="display: none;">
+                <h3>🕐 Temporal Analysis</h3>
+                <label for="timeSlider" style="color: #ffffff; font-family: 'Exo 2', sans-serif;">Satellite Archive:</label>
+                <input type="range" id="timeSlider" class="time-slider" min="2014" max="2024" value="2024">
+                <div class="year-display">YEAR: <span id="currentYear">2024</span></div>
+            </div>
+
+            <div class="zoom-controls">
+                <button class="zoom-btn" id="zoomIn">+</button>
+                <button class="zoom-btn" id="zoomOut">−</button>
+                <button class="zoom-btn" id="resetZoom">🌍</button>
+            </div>
+
+            <div class="legend">
+                <h4>🌡 Climate Stress Matrix</h4>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: radial-gradient(circle, rgba(0,255,0,0.8) 0%, rgba(100,255,100,0.4) 100%);"></div>
+                    <span>Optimal Ecosystem (0-2 Events)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: radial-gradient(circle, rgba(255,165,0,0.8) 0%, rgba(255,200,100,0.4) 100%);"></div>
+                    <span>Moderate Stress (3-6 Events)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: radial-gradient(circle, rgba(255,0,0,0.8) 0%, rgba(255,100,100,0.4) 100%);"></div>
+                    <span>Critical Alert (7+ Events)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <button class="close-btn" id="closeSidebar">✕</button>
+            <h2 id="zoneName">🛰 Select Target Zone</h2>
+
+            <div class="info-section">
+                <h3>🌡 Climate Stress Analysis (Current)</h3>
+                <div class="stress-meter">
+                    <div class="stress-fill" id="stressFill"></div>
+                </div>
+                <p id="stressPercent" style="color: #00ff00; font-family: 'Orbitron', monospace;">Awaiting satellite data...</p>
+            </div>
+
+            <div class="info-section">
+                <h3>🌱 Biosphere Health Matrix</h3>
+                <p id="plantHealth" style="color: #ffffff;">Scanning ecosystem parameters...</p>
+                <div class="plant-legend" id="plantLegend"></div>
+            </div>
+
+            <div class="info-section">
+                <h3>🚀 Mission Recommendations</h3>
+                <ul id="suggestions" style="color: #ffffff; padding-left: 20px;">
+                    <li>Select zone for mission parameters</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <h3>🔮 Predictive Analysis (EONET Events)</h3>
+                <div class="prediction" id="prediction">
+                    <p style="color: #ffffff;">Fetching current NASA EONET events...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'RSc1CXe7sy1jTGrVLB1eZxpDM63uTOB3WDVzjpcF'; // Replace with your actual NASA API Key for production
+        const EONET_API_URL = https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=all;
+
+        // Enhanced zone data. Static data for stress and prediction is REMOVED.
+        const zoneData = {
+            zone1: {
+                name: "North American Boreal Forests",
+                coords: { lat: 50, lon: -100, radiusKm: 1500 }, // Added coordinates for API check
+                dominantVegetation: { icon: "🌲", type: "Coniferous Forest" },
+                plants: ["🌲 Coniferous Biomass", "🍃 Deciduous Canopy", "🌿 Understory Matrix", "🦌 Wildlife Corridors"],
+                suggestions: [
+                    "Deploy reforestation satellites",
+                    "Implement carbon sequestration protocols",
+                    "Activate forest monitoring network",
+                    "Launch biodiversity preservation mission"
+                ],
+            },
+            zone2: {
+                name: "Amazon Basin Critical Zone",
+                coords: { lat: -5, lon: -60, radiusKm: 2000 },
+                dominantVegetation: { icon: "🌳", type: "Tropical Rainforest" },
+                plants: ["🌳 Tropical Canopy", "🌿 Medicinal Flora", "🌺 Endemic Species", "🦋 Pollinator Network"],
+                suggestions: [
+                    "Activate emergency conservation protocols",
+                    "Deploy deforestation monitoring satellites",
+                    "Implement indigenous protection programs",
+                    "Launch carbon offset initiatives"
+                ],
+            },
+            zone3: {
+                name: "Sahara Expansion Zone",
+                coords: { lat: 20, lon: 20, radiusKm: 2500 },
+                dominantVegetation: { icon: "🌵", type: "Desert Biome" },
+                plants: ["🌵 Desert Adaptation", "🌿 Xerophytic Species", "🦎 Arid Ecosystem"],
+                suggestions: [
+                    "Deploy desert regreening technology",
+                    "Activate solar collection arrays",
+                    "Implement water conservation protocols",
+                    "Launch climate adaptation research"
+                ],
+            },
+            zone4: {
+                name: "European Climate Sanctuary",
+                coords: { lat: 50, lon: 10, radiusKm: 1000 },
+                dominantVegetation: { icon: "🌳", type: "Temperate Forest" },
+                plants: ["🌳 Temperate Hardwoods", "🍂 Seasonal Adaptation", "🌿 Managed Understory", "🐝 Pollinator Hubs"],
+                suggestions: [
+                    "Maintain Green Deal protocols",
+                    "Expand renewable energy grid",
+                    "Deploy urban forest networks",
+                    "Activate carbon neutrality systems"
+                ],
+            },
+            zone5: {
+                name: "Siberian Taiga Monitoring Zone",
+                coords: { lat: 60, lon: 100, radiusKm: 3000 },
+                dominantVegetation: { icon: "🌲", type: "Boreal Taiga" },
+                plants: ["🌲 Boreal Conifers", "❄ Permafrost Flora", "🐻 Arctic Megafauna", "🌨 Tundra Transition"],
+                suggestions: [
+                    "Deploy permafrost monitoring arrays",
+                    "Activate wildfire suppression systems",
+                    "Implement carbon sink protection",
+                    "Launch Arctic research stations"
+                ],
+            },
+            zone6: {
+                name: "Southeast Asian Biodiversity Hotspot",
+                coords: { lat: 10, lon: 100, radiusKm: 1200 },
+                dominantVegetation: { icon: "🌴", type: "Tropical Palms" },
+                plants: ["🌴 Tropical Palms", "🌺 Endemic Orchids", "🦧 Primate Habitats", "🐅 Apex Predators"],
+                suggestions: [
+                    "Emergency biodiversity protection",
+                    "Deploy anti-deforestation satellites",
+                    "Activate species preservation protocols",
+                    "Launch sustainable development programs"
+                ],
+            },
+            zone7: {
+                name: "Australian Continental Monitoring",
+                coords: { lat: -25, lon: 135, radiusKm: 2000 },
+                dominantVegetation: { icon: "🌿", type: "Scrubland" },
+                plants: ["🌿 Fire-Adapted Flora", "🦘 Marsupial Habitats", "🌳 Eucalyptus Groves", "🔥 Recovery Zones"],
+                suggestions: [
+                    "Deploy fire prevention satellites",
+                    "Activate species recovery programs",
+                    "Implement water security protocols",
+                    "Launch climate resilience initiatives"
+                ],
+            },
+            zone8: {
+                name: "African Savanna Corridor",
+                coords: { lat: 5, lon: 30, radiusKm: 1800 },
+                dominantVegetation: { icon: "🌾", type: "Grassland Savanna" },
+                plants: ["🌳 Acacia Networks", "🦁 Apex Predators", "🌾 Grassland Matrix", "🐘 Megafauna Corridors"],
+                suggestions: [
+                    "Deploy wildlife tracking satellites",
+                    "Activate poaching prevention systems",
+                    "Implement drought relief protocols",
+                    "Launch ecosystem migration studies"
+                ],
+            },
+            zone9: {
+                name: "Arctic Tundra Research Outpost",
+                coords: { lat: 70, lon: -150, radiusKm: 1000 },
+                dominantVegetation: { icon: "❄", type: "Arctic Tundra" },
+                plants: ["🧊 Cryosphere Flora", "🌬 Lichen & Moss", "🦊 Arctic Fox Habitat", "🐋 Marine Life Watch"],
+                suggestions: [
+                    "Deploy ice sheet monitoring buoys",
+                    "Activate warming mitigation research",
+                    "Implement endangered species watch",
+                    "Launch ocean current study missions"
+                ],
+            }
+        };
+
+        const sidebar = document.getElementById('sidebar');
+        const zones = document.querySelectorAll('.zone');
+        let currentActiveZone = null;
+        let earthEvents = []; // To store fetched EONET events
+
+        // --- Utility Function to calculate distance (Haversine formula) ---
+        function haversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of Earth in kilometers
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        // --- NASA API Data Fetching ---
+        async function fetchEonetData() {
+            try {
+                const response = await fetch(EONET_API_URL);
+                if (!response.ok) {
+                    throw new Error(HTTP error! status: ${response.status});
+                }
+                const data = await response.json();
+                earthEvents = data.events || [];
+                document.getElementById('prediction').innerHTML = <p style="color: #ffffff;">**LIVE DATA RECEIVED** - Tracking ${earthEvents.length} open global events.</p>;
+                console.log("EONET Data Fetched:", earthEvents);
+                updateZoneVisuals(earthEvents);
+            } catch (error) {
+                console.error("Error fetching EONET data:", error);
+                document.getElementById('prediction').innerHTML = <p style="color: #ff5555;">🚨 ERROR: Failed to fetch EONET data. Using fallback data simulation.</p>;
+                // Fallback to static data simulation if API fails
+                simulateFallbackData();
+            }
+        }
+
+        function getStressLevel(eventCount) {
+            let stress, health, cssClass;
+            let stressValue = Math.min(100, eventCount * 15); // Scale event count to 0-100%
+
+            if (eventCount >= 7) {
+                stress = stressValue;
+                health = "Critical Alert - High Event Density";
+                cssClass = "danger";
+            } else if (eventCount >= 3) {
+                stress = stressValue;
+                health = "Moderate Stress - Elevated Events";
+                cssClass = "moderate";
+            } else {
+                stress = stressValue;
+                health = "Optimal - Low Event Count";
+                cssClass = "healthy";
+            }
+
+            return { stress, health, cssClass };
+        }
+
+        function updateZoneVisuals(events) {
+            zones.forEach(zoneElement => {
+                const zoneId = zoneElement.id;
+                const zoneInfo = zoneData[zoneId];
+                if (!zoneInfo) return;
+
+                const zoneLat = zoneInfo.coords.lat;
+                const zoneLon = zoneInfo.coords.lon;
+                const zoneRadiusKm = zoneInfo.coords.radiusKm;
+                let eventCount = 0;
+                let mostSevereEvent = "No major events detected.";
+
+                // Count events within the zone's radius
+                events.forEach(event => {
+                    if (event.geometries && event.geometries.length > 0) {
+                        const geometry = event.geometries[0];
+                        let eventLat, eventLon;
+
+                        // EONET geometries can be points or polygons. We'll use the first point.
+                        if (geometry.type === 'Point' && geometry.coordinates.length === 2) {
+                            eventLon = geometry.coordinates[0];
+                            eventLat = geometry.coordinates[1];
+                        } else if (geometry.type === 'Polygon' && geometry.coordinates[0].length > 0) {
+                            // Simple centroid approximation for polygons (first coordinate)
+                            eventLon = geometry.coordinates[0][0][0];
+                            eventLat = geometry.coordinates[0][0][1];
+                        }
+
+                        if (eventLat && eventLon) {
+                            const distance = haversine(zoneLat, zoneLon, eventLat, eventLon);
+                            if (distance <= zoneRadiusKm) {
+                                eventCount++;
+                                mostSevereEvent = event.title;
+                            }
+                        }
+                    }
+                });
+
+                const { stress, health, cssClass } = getStressLevel(eventCount);
+
+                // Update DOM elements for the zone
+                zoneElement.classList.remove('healthy', 'moderate', 'danger');
+                zoneElement.classList.add(cssClass);
+                zoneElement.setAttribute('data-stress', stress);
+                zoneElement.setAttribute('data-event-count', eventCount);
+                zoneElement.setAttribute('data-health-status', health);
+                zoneElement.setAttribute('data-most-severe-event', mostSevereEvent);
+
+                // Dynamically adjust size based on stress (visual feedback)
+                const baseSize = parseInt(zoneElement.getAttribute('data-base-size'));
+                const newSize = baseSize + (stress / 10);
+                zoneElement.style.width = ${newSize}px;
+                zoneElement.style.height = ${newSize}px;
+            });
+
+            // Re-render the sidebar if a zone is currently selected
+            if (currentActiveZone) {
+                renderSidebar(currentActiveZone);
+            }
+        }
+
+        // --- Fallback Simulation (If NASA API Fails) ---
+        function simulateFallbackData() {
+            zones.forEach(zoneElement => {
+                const eventCount = Math.floor(Math.random() * 10); // Random events 0-9
+                const { stress, health, cssClass } = getStressLevel(eventCount);
+
+                zoneElement.classList.remove('healthy', 'moderate', 'danger');
+                zoneElement.classList.add(cssClass);
+                zoneElement.setAttribute('data-stress', stress);
+                zoneElement.setAttribute('data-event-count', eventCount);
+                zoneElement.setAttribute('data-health-status', health + " (SIMULATED)");
+                zoneElement.setAttribute('data-most-severe-event', Simulated Event: ${eventCount} local incidents);
+
+                const baseSize = parseInt(zoneElement.getAttribute('data-base-size'));
+                const newSize = baseSize + (stress / 10);
+                zoneElement.style.width = ${newSize}px;
+                zoneElement.style.height = ${newSize}px;
+            });
+
+            if (currentActiveZone) {
+                renderSidebar(currentActiveZone);
+            }
+        }
+
+        // --- Sidebar & Interaction Logic ---
+        function renderSidebar(zoneElement) {
+            const zoneId = zoneElement.id;
+            const data = zoneData[zoneId];
+
+            const stress = zoneElement.getAttribute('data-stress');
+            const healthStatus = zoneElement.getAttribute('data-health-status');
+            const eventCount = zoneElement.getAttribute('data-event-count');
+            const mostSevereEvent = zoneElement.getAttribute('data-most-severe-event');
+            const cssClass = zoneElement.classList.contains('danger') ? 'negative' : (zoneElement.classList.contains('moderate') ? 'moderate' : 'positive');
+
+            // 1. Zone Name
+            document.getElementById('zoneName').textContent = 🛰 ${data.name};
+
+            // 2. Stress Analysis
+            const stressFill = document.getElementById('stressFill');
+            stressFill.style.width = ${stress}%;
+            stressFill.style.background = linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%); // Keep gradient for color scale
+            stressFill.style.filter = hue-rotate(${(100 - stress) * 1.2}deg); // Adjust color based on stress
+            document.getElementById('stressPercent').innerHTML = **${stress}% Stress Level** <br> Status: <span style="font-family:'Exo 2', sans-serif;">${healthStatus}</span>;
+
+            // 3. Biosphere Health Matrix
+            document.getElementById('plantHealth').textContent = Dominant Type: ${data.dominantVegetation.icon} ${data.dominantVegetation.type};
+            const plantLegendHtml = data.plants.map(p => <div class="plant-item">${p}</div>).join('');
+            document.getElementById('plantLegend').innerHTML = plantLegendHtml;
+
+            // 4. Mission Recommendations
+            const suggestionsHtml = data.suggestions.map(s => <li>${s}</li>).join('');
+            document.getElementById('suggestions').innerHTML = suggestionsHtml;
+
+            // 5. Predictive Analysis (Dynamic EONET Data)
+            const predictionEl = document.getElementById('prediction');
+            predictionEl.className = prediction ${cssClass};
+            predictionEl.innerHTML = `
+                <p style="color: #ffffff;">
+                    <strong>CURRENT ALERT: ${eventCount} Active Event(s) Detected!</strong>
+                </p>
+                <p style="font-size: 11px;">
+                    *Most Severe Incident:* ${mostSevereEvent}
+                </p>
+                <p style="font-size: 11px; opacity: 0.8;">
+                    Events are sourced from the NASA EONET API and indicate real-time natural hazards.
+                </p>
+            `;
+
+            sidebar.classList.add('active');
+        }
+
+        zones.forEach(zone => {
+            zone.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent map click event from triggering if one exists
+                currentActiveZone = zone;
+                renderSidebar(zone);
+            });
+        });
+
+        document.getElementById('closeSidebar').addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            currentActiveZone = null;
+        });
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initiate data fetch
+            fetchEonetData();
+            // Your existing particle and other static animation setup can remain here
+        });
+
+        // The time slider logic is now purely aesthetic since EONET provides current data
+        const timeSlider = document.getElementById('timeSlider');
+        const currentYearDisplay = document.getElementById('currentYear');
+        timeSlider.addEventListener('input', (e) => {
+            currentYearDisplay.textContent = e.target.value;
+            // Since the API only returns current events, this only updates the text
+        });
+
+        // --- Earth Drag and Zoom Logic (Keep existing functionality) ---
+
+        const earthImage = document.getElementById('earthImage');
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+        let scale = 1.0;
+        const maxScale = 4;
+        const minScale = 1;
+
+        earthImage.style.transformOrigin = 'center center'; // Ensure proper scaling origin
+
+        // Dragging logic
+        earthImage.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            const style = window.getComputedStyle(earthImage);
+            const matrix = new WebKitCSSMatrix(style.transform);
+            initialX = matrix.e || 0;
+            initialY = matrix.f || 0;
+            earthImage.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            let newX = initialX + dx;
+            let newY = initialY + dy;
+
+            // Apply limits to dragging based on current scale to prevent seeing outside the map
+            const imgWidth = earthImage.clientWidth * scale;
+            const imgHeight = earthImage.clientHeight * scale;
+            const containerWidth = earthImage.parentElement.clientWidth;
+            const containerHeight = earthImage.parentElement.clientHeight;
+
+            const maxX = Math.max(0, (imgWidth - containerWidth) / 2);
+            const maxY = Math.max(0, (imgHeight - containerHeight) / 2);
+
+            // Correct for initial offset (translate starts at 0,0, but image is centered by object-fit)
+            const offsetX = (containerWidth - imgWidth) / 2;
+            const offsetY = (containerHeight - imgHeight) / 2;
+
+            newX = Math.min(Math.max(newX, -maxX), maxX);
+            newY = Math.min(Math.max(newY, -maxY), maxY);
+
+            earthImage.style.transform = scale(${scale}) translate(${newX}px, ${newY}px);
+
+            // Reposition zones based on image translation
+            zones.forEach(zone => {
+                const zoneContainer = zone.parentElement;
+                const zoneX = parseFloat(zone.style.left);
+                const zoneY = parseFloat(zone.style.top);
+
+                // Calculate the pixel position relative to the container for the original 100% size
+                const originalX = (zoneX / 100) * containerWidth;
+                const originalY = (zoneY / 100) * containerHeight;
+
+                // Calculate the final position considering scale and translation
+                // This is a complex step for a purely visual overlay, a mapping library is usually better.
+                // For simplicity here, we'll keep the zone overlay fixed over the image's original position.
+                // To truly track the map, you'd need to apply the same transform to the zone-overlay,
+                // but since its children are positioned with %s, this is tricky.
+
+                // Easiest solution: Apply the transform to the parent container of the zones as well.
+                const zoneOverlay = document.querySelector('.zone-overlay');
+                zoneOverlay.style.transform = scale(${scale}) translate(${newX}px, ${newY}px);
+                zoneOverlay.style.transition = 'transform 0.05s ease-out';
+            });
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            earthImage.style.cursor = 'grab';
+        });
+
+        // Zoom logic
+        function updateScale(newScale) {
+            scale = Math.min(maxScale, Math.max(minScale, newScale));
+
+            const style = window.getComputedStyle(earthImage);
+            const matrix = new WebKitCSSMatrix(style.transform);
+            let currentX = matrix.e || 0;
+            let currentY = matrix.f || 0;
+
+            // Simple reset to center for basic zoom implementation
+            if (scale === 1.0) {
+                currentX = 0;
+                currentY = 0;
+            }
+
+            earthImage.style.transform = scale(${scale}) translate(${currentX}px, ${currentY}px);
+            const zoneOverlay = document.querySelector('.zone-overlay');
+            zoneOverlay.style.transform = scale(${scale}) translate(${currentX}px, ${currentY}px);
+
+        }
+
+        document.getElementById('zoomIn').addEventListener('click', () => updateScale(scale + 0.5));
+        document.getElementById('zoomOut').addEventListener('click', () => updateScale(scale - 0.5));
+        document.getElementById('resetZoom').addEventListener('click', () => {
+            updateScale(1.0);
+            const zoneOverlay = document.querySelector('.zone-overlay');
+            zoneOverlay.style.transform = 'scale(1) translate(0px, 0px)';
+        });
+
+        // --- Particle Generation (Keep existing functionality) ---
+
+        const particlesContainer = document.getElementById('particles');
+        const numParticles = 30;
+
+        for (let i = 0; i < numParticles; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = ${Math.random() * 100}vw;
+            particle.style.top = ${Math.random() * 100}vh;
+            particle.style.animationDelay = ${Math.random() * 10}s;
+            particlesContainer.appendChild(particle);
+        }
+
+    </script>
+</body>
+</html>
