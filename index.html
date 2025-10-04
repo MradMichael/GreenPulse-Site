@@ -1044,7 +1044,7 @@
             newX = Math.min(Math.max(newX, -maxX), maxX);
             newY = Math.min(Math.max(newY, -maxY), maxY);
 
-            earthImage.style.transform = `scale(${scale}) translate(${newX}px, ${newY}px)`;
+            earthImage.style.transform =  'scale(' + scale + ') translate(' + newX + 'px, ' + newY + 'px)';
 
 
             // Reposition zones based on image translation
