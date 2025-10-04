@@ -887,8 +887,9 @@
                 // Dynamically adjust size based on stress (visual feedback)
                 const baseSize = parseInt(zoneElement.getAttribute('data-base-size'));
                 const newSize = baseSize + (stress / 10);
-                zoneElement.style.width = `${newSize}px`;
-                zoneElement.style.height = `${newSize}px`;
+               zoneElement.style.width = `${newSize}px`;
+               zoneElement.style.height = `${newSize}px`;
+
             });
 
             // Re-render the sidebar if a zone is currently selected
@@ -912,8 +913,8 @@
 
                 const baseSize = parseInt(zoneElement.getAttribute('data-base-size'));
                 const newSize = baseSize + (stress / 10);
-                zoneElement.style.width = ${newSize}px;
-                zoneElement.style.height = ${newSize}px;
+                zoneElement.style.width = `${newSize}px`;
+                zoneElement.style.height = `${newSize}px`;
             });
 
             if (currentActiveZone) {
@@ -933,7 +934,7 @@
             const cssClass = zoneElement.classList.contains('danger') ? 'negative' : (zoneElement.classList.contains('moderate') ? 'moderate' : 'positive');
 
             // 1. Zone Name
-            document.getElementById('zoneName').textContent = 🛰 ${data.name};
+            document.getElementById('zoneName').textContent = `🛰 ${data.name}`;
 
 
             // 2. Stress Analysis
@@ -1113,9 +1114,9 @@
         for (let i = 0; i < numParticles; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
-            particle.style.left = ${Math.random() * 100}vw;
-            particle.style.top = ${Math.random() * 100}vh;
-            particle.style.animationDelay = ${Math.random() * 10}s;
+            particle.style.left = (Math.random() * 100) + 'vw';
+            particle.style.top = (Math.random() * 100) + 'vh';
+            particle.style.animationDelay = (Math.random() * 10) + 's';
             particlesContainer.appendChild(particle);
         }
 
