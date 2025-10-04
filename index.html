@@ -809,7 +809,7 @@
           } catch (error) {
             console.error('Error fetching EONET data:', error);
             document.getElementById('prediction').innerHTML =
-              `<p style="color:#ff5555;">🚨 ERROR: Failed to fetch EONET data. Using fallback data simulation.</p>`;
+                `<p style="color:#ff5555;">🚨 ERROR: Failed to fetch EONET data. Using fallback data simulation.</p>`;
             simulateFallbackData();
           }
         }
@@ -864,7 +864,7 @@
                             eventLat = geometry.coordinates[0][0][1];
                         }
 
-                        if (eventLat && eventLon) {
+                        if (typeof eventLat === 'number' && typeof eventLon === 'number') {
                             const distance = haversine(zoneLat, zoneLon, eventLat, eventLon);
                             if (distance <= zoneRadiusKm) {
                                 eventCount++;
@@ -887,8 +887,8 @@
                 // Dynamically adjust size based on stress (visual feedback)
                 const baseSize = parseInt(zoneElement.getAttribute('data-base-size'));
                 const newSize = baseSize + (stress / 10);
-                zoneElement.style.width = ${newSize}px;
-                zoneElement.style.height = ${newSize}px;
+                zoneElement.style.width = `${newSize}px`;
+                zoneElement.style.height = `${newSize}px`;
             });
 
             // Re-render the sidebar if a zone is currently selected
@@ -908,7 +908,7 @@
                 zoneElement.setAttribute('data-stress', stress);
                 zoneElement.setAttribute('data-event-count', eventCount);
                 zoneElement.setAttribute('data-health-status', health + " (SIMULATED)");
-                zoneElement.setAttribute('data-most-severe-event', Simulated Event: ${eventCount} local incidents);
+                zoneElement.setAttribute('data-most-severe-event', `Simulated Event: ${eventCount} local incidents`);
 
                 const baseSize = parseInt(zoneElement.getAttribute('data-base-size'));
                 const newSize = baseSize + (stress / 10);
@@ -934,6 +934,7 @@
 
             // 1. Zone Name
             document.getElementById('zoneName').textContent = 🛰 ${data.name};
+
 
             // 2. Stress Analysis
             const stressFill = document.getElementById('stressFill');
