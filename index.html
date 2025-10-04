@@ -935,7 +935,8 @@
 
             // 1. Zone Name
             document.getElementById('zoneName').textContent = `🛰 ${data.name}`;
-            
+            const stressFill = document.getElementById('stressFill');
+
             stressFill.style.width = `${stress}%`;
             stressFill.style.background = 'linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%)';
             stressFill.style.filter = `hue-rotate(${(100 - stress) * 1.2}deg)`;
@@ -1064,11 +1065,14 @@
                 // but since its children are positioned with %s, this is tricky.
 
                 // Easiest solution: Apply the transform to the parent container of the zones as well.
+                // Move the entire overlay with the image
                 const zoneOverlay = document.querySelector('.zone-overlay');
                 if (zoneOverlay) {
                   zoneOverlay.style.transform =
                     'scale(' + scale + ') translate(' + newX + 'px, ' + newY + 'px)';
                   zoneOverlay.style.transition = 'transform 0.05s ease-out';
+                }
+
             });
         });
 
@@ -1092,7 +1096,7 @@
                 currentY = 0;
             }
 
-            earthImage.style.transform = scale(${scale}) translate(${currentX}px, ${currentY}px);
+            m = scale(${scale}) translate(${currentX}px, ${currentY}px);
             const zoneOverlay = document.querySelector('.zone-overlay');
             zoneOverlay.style.transform = scale(${scale}) translate(${currentX}px, ${currentY}px);
 
