@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NASA Earth Climate Observatory - Interactive Mission Control</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght&display=swap" rel="stylesheet">
     <style>
-        /* ... (Your existing CSS here - NO CHANGES NEEDED IN CSS) ... */
-
         body {
             box-sizing: border-box;
             margin: 0;
@@ -152,7 +150,23 @@
             font-size: 16px;
             color: white;
             text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            /* Initial size override for dynamic scaling */
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
         }
+
+        /* Specific positioning from original file, but removed specific size to allow dynamic scaling */
+        #zone1 { top: 15%; left: 15%; }
+        #zone2 { top: 45%; left: 25%; }
+        #zone3 { top: 35%; left: 48%; }
+        #zone4 { top: 25%; left: 48%; }
+        #zone5 { top: 18%; left: 60%; }
+        #zone6 { top: 40%; left: 75%; }
+        #zone7 { top: 65%; left: 75%; }
+        #zone8 { top: 45%; left: 50%; }
+        #zone9 { top: 8%; left: 20%; }
+
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.3); }
@@ -205,7 +219,7 @@
         .controls {
             position: absolute;
             top: 80px;
-            left: 20px;
+                left: 20px;
             background: linear-gradient(135deg, rgba(0,40,20,0.95) 0%, rgba(0,100,50,0.9) 100%);
             padding: 15px;
             border-radius: 10px;
@@ -216,6 +230,7 @@
             z-index: 100;
             backdrop-filter: blur(10px);
             width: 200px;
+            display: none; /* Hide static temporal control as it's not supported by V2.1 live data */
         }
 
         .controls h3 {
@@ -227,36 +242,9 @@
             letter-spacing: 1px;
             text-shadow: 0 0 5px rgba(144,255,144,0.5);
         }
+        /* Hidden elements from static version */
+        .time-slider, .year-display { display: none; }
 
-        .time-slider {
-            width: 160px;
-            margin: 10px 0;
-            background: transparent;
-            -webkit-appearance: none;
-            height: 6px;
-            border-radius: 3px;
-            background: linear-gradient(90deg, #ff0000 0%, #ffff00 50%, #00ff00 100%);
-            outline: none;
-        }
-
-        .time-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #90ff90;
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(144,255,144,0.8);
-        }
-
-        .year-display {
-            font-family: 'Orbitron', monospace;
-            font-size: 14px;
-            color: #90ff90;
-            text-shadow: 0 0 5px rgba(0,255,0,0.5);
-            margin-top: 8px;
-        }
 
         .zoom-controls {
             position: absolute;
@@ -290,7 +278,7 @@
         }
 
         .sidebar {
-            width: 280px;
+            width: 320px; /* Increased width for better content display */
             background: linear-gradient(180deg, rgba(0,30,10,0.95) 0%, rgba(0,60,30,0.9) 100%);
             backdrop-filter: blur(15px);
             padding: 20px;
@@ -363,7 +351,7 @@
 
         .stress-fill {
             height: 100%;
-            transition: width 0.8s ease;
+            transition: width 0.8s ease, background 0.8s ease; /* Added background transition */
             border-radius: 10px;
             background: linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%);
             box-shadow: 0 0 10px rgba(255,255,255,0.3);
@@ -580,26 +568,24 @@
                  onerror="this.src=''; this.alt='Loading satellite imagery...'; this.style.background='linear-gradient(45deg, #001122 0%, #003366 100%)'; this.style.display='block';">
 
             <div class="zone-overlay">
-                <div class="zone healthy" id="zone1" style="top: 15%; left: 15%; width: 35px; height: 35px;" data-zone="North American Forests" data-base-size="35" data-lat="50" data-lon="-100">🌲</div>
-                <div class="zone moderate" id="zone2" style="top: 45%; left: 25%; width: 40px; height: 40px;" data-zone="Amazon Rainforest" data-base-size="40" data-lat="-5" data-lon="-60">🌳</div>
-                <div class="zone danger" id="zone3" style="top: 35%; left: 48%; width: 45px; height: 45px;" data-zone="Sahara Desert" data-base-size="45" data-lat="20" data-lon="20">🌵</div>
-                <div class="zone healthy" id="zone4" style="top: 25%; left: 48%; width: 25px; height: 25px;" data-zone="European Forests" data-base-size="25" data-lat="50" data-lon="10">🌳</div>
-                <div class="zone moderate" id="zone5" style="top: 18%; left: 60%; width: 55px; height: 55px;" data-zone="Siberian Taiga" data-base-size="55" data-lat="60" data-lon="100">🌲</div>
-                <div class="zone danger" id="zone6" style="top: 40%; left: 75%; width: 30px; height: 30px;" data-zone="SE Asian Rainforests" data-base-size="30" data-lat="10" data-lon="100">🌴</div>
-                <div class="zone danger" id="zone7" style="top: 65%; left: 75%; width: 38px; height: 38px;" data-zone="Australian Outback" data-base-size="38" data-lat="-25" data-lon="135">🌿</div>
-                <div class="zone moderate" id="zone8" style="top: 45%; left: 50%; width: 42px; height: 42px;" data-zone="African Savanna" data-base-size="42" data-lat="5" data-lon="30">🌾</div>
-                <div class="zone moderate" id="zone9" style="top: 8%; left: 20%; width: 50px; height: 25px;" data-zone="Arctic Tundra" data-base-size="50" data-lat="70" data-lon="-150">❄</div>
+                <div class="zone healthy" id="zone1" data-zone="North American Forests">🌲</div>
+                <div class="zone moderate" id="zone2" data-zone="Amazon Rainforest">🌳</div>
+                <div class="zone danger" id="zone3" data-zone="Sahara Desert">🌵</div>
+                <div class="zone healthy" id="zone4" data-zone="European Forests">🌳</div>
+                <div class="zone moderate" id="zone5" data-zone="Siberian Taiga">🌲</div>
+                <div class="zone danger" id="zone6" data-zone="SE Asian Rainforests">🌴</div>
+                <div class="zone danger" id="zone7" data-zone="Australian Outback">🌿</div>
+                <div class="zone moderate" id="zone8" data-zone="African Savanna">🌾</div>
+                <div class="zone moderate" id="zone9" data-zone="Arctic Tundra">❄️</div>
 
             </div>
 
-            <div class="satellite-indicator">🛰 LANDSAT-9 ACTIVE</div>
+            <div class="satellite-indicator">🛰️ LANDSAT-9 ACTIVE</div>
             <div class="data-stream">DATA STREAM: 847.2 MB/s</div>
 
-            <div class="controls" id="controls" style="display: none;">
+            <div class="controls" id="controls">
                 <h3>🕐 Temporal Analysis</h3>
-                <label for="timeSlider" style="color: #ffffff; font-family: 'Exo 2', sans-serif;">Satellite Archive:</label>
-                <input type="range" id="timeSlider" class="time-slider" min="2014" max="2024" value="2024">
-                <div class="year-display">YEAR: <span id="currentYear">2024</span></div>
+                <div class="year-display">DATA SOURCE: <span id="currentYear">LIVE EONET V2.1</span></div>
             </div>
 
             <div class="zoom-controls">
@@ -609,463 +595,402 @@
             </div>
 
             <div class="legend">
-                <h4>🌡 Climate Stress Matrix</h4>
+                <h4>🌡️ Climate Stress Matrix (Percentage)</h4>
                 <div class="legend-item">
                     <div class="legend-color" style="background: radial-gradient(circle, rgba(0,255,0,0.8) 0%, rgba(100,255,100,0.4) 100%);"></div>
-                    <span>Optimal Ecosystem (0-2 Events)</span>
+                    <span>Optimal Ecosystem (Score < 15%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: radial-gradient(circle, rgba(255,165,0,0.8) 0%, rgba(255,200,100,0.4) 100%);"></div>
-                    <span>Moderate Stress (3-6 Events)</span>
+                    <span>Moderate Stress (15% - 30%)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: radial-gradient(circle, rgba(255,0,0,0.8) 0%, rgba(255,100,100,0.4) 100%);"></div>
-                    <span>Critical Alert (7+ Events)</span>
+                    <span>Critical Alert (Score > 30%)</span>
                 </div>
             </div>
         </div>
 
         <div class="sidebar" id="sidebar">
             <button class="close-btn" id="closeSidebar">✕</button>
-            <h2 id="zoneName">🛰 Select Target Zone</h2>
+            <h2 id="zoneName">🛰️ Select Target Zone</h2>
 
             <div class="info-section">
-                <h3>🌡 Climate Stress Analysis (Current)</h3>
+                <h3>🌡️ Climate Stress Analysis (EONET Data)</h3>
                 <div class="stress-meter">
                     <div class="stress-fill" id="stressFill"></div>
                 </div>
-                <p id="stressPercent" style="color: #00ff00; font-family: 'Orbitron', monospace;">Awaiting satellite data...</p>
+                <p id="stressPercent" style="color: #00ff00; font-family: 'Orbitron', monospace;">Loading live event data...</p>
             </div>
 
             <div class="info-section">
-                <h3>🌱 Biosphere Health Matrix</h3>
-                <p id="plantHealth" style="color: #ffffff;">Scanning ecosystem parameters...</p>
+                <h3>🔥 Event Summary</h3>
+                <p id="eventSummary" style="color: #ffffff;">No recent events detected.</p>
+            </div>
+
+            <div class="info-section">
+                <h3>🌱 Biosphere Health Matrix (Static)</h3>
+                <p id="plantHealth" style="color: #ffffff;">Ecosystem parameters based on mission profile.</p>
                 <div class="plant-legend" id="plantLegend"></div>
             </div>
 
             <div class="info-section">
-                <h3>🚀 Mission Recommendations</h3>
+                <h3>🚀 Mission Recommendations (Static)</h3>
                 <ul id="suggestions" style="color: #ffffff; padding-left: 20px;">
                     <li>Select zone for mission parameters</li>
                 </ul>
-            </div>
-
-            <div class="info-section">
-                <h3>🔮 Predictive Analysis (EONET Events)</h3>
-                <div class="prediction" id="prediction">
-                    <p style="color: #ffffff;">Fetching current NASA EONET events...</p>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-        const API_KEY = 'RSc1CXe7sy1jTGrVLB1eZxpDM63uTOB3WDVzjpcF'; // Replace with your actual NASA API Key for production
-        const EONET_API_URL = https://eonet.gsfc.nasa.gov/api/v3/events?status=open&category=all;
+        // --- NASA EONET INTEGRATION (New Dynamic Logic) ---
 
-        // Enhanced zone data. Static data for stress and prediction is REMOVED.
-        const zoneData = {
-            zone1: {
-                name: "North American Boreal Forests",
-                coords: { lat: 50, lon: -100, radiusKm: 1500 }, // Added coordinates for API check
-                dominantVegetation: { icon: "🌲", type: "Coniferous Forest" },
-                plants: ["🌲 Coniferous Biomass", "🍃 Deciduous Canopy", "🌿 Understory Matrix", "🦌 Wildlife Corridors"],
-                suggestions: [
-                    "Deploy reforestation satellites",
-                    "Implement carbon sequestration protocols",
-                    "Activate forest monitoring network",
-                    "Launch biodiversity preservation mission"
-                ],
-            },
-            zone2: {
-                name: "Amazon Basin Critical Zone",
-                coords: { lat: -5, lon: -60, radiusKm: 2000 },
-                dominantVegetation: { icon: "🌳", type: "Tropical Rainforest" },
-                plants: ["🌳 Tropical Canopy", "🌿 Medicinal Flora", "🌺 Endemic Species", "🦋 Pollinator Network"],
-                suggestions: [
-                    "Activate emergency conservation protocols",
-                    "Deploy deforestation monitoring satellites",
-                    "Implement indigenous protection programs",
-                    "Launch carbon offset initiatives"
-                ],
-            },
-            zone3: {
-                name: "Sahara Expansion Zone",
-                coords: { lat: 20, lon: 20, radiusKm: 2500 },
-                dominantVegetation: { icon: "🌵", type: "Desert Biome" },
-                plants: ["🌵 Desert Adaptation", "🌿 Xerophytic Species", "🦎 Arid Ecosystem"],
-                suggestions: [
-                    "Deploy desert regreening technology",
-                    "Activate solar collection arrays",
-                    "Implement water conservation protocols",
-                    "Launch climate adaptation research"
-                ],
-            },
-            zone4: {
-                name: "European Climate Sanctuary",
-                coords: { lat: 50, lon: 10, radiusKm: 1000 },
-                dominantVegetation: { icon: "🌳", type: "Temperate Forest" },
-                plants: ["🌳 Temperate Hardwoods", "🍂 Seasonal Adaptation", "🌿 Managed Understory", "🐝 Pollinator Hubs"],
-                suggestions: [
-                    "Maintain Green Deal protocols",
-                    "Expand renewable energy grid",
-                    "Deploy urban forest networks",
-                    "Activate carbon neutrality systems"
-                ],
-            },
-            zone5: {
-                name: "Siberian Taiga Monitoring Zone",
-                coords: { lat: 60, lon: 100, radiusKm: 3000 },
-                dominantVegetation: { icon: "🌲", type: "Boreal Taiga" },
-                plants: ["🌲 Boreal Conifers", "❄ Permafrost Flora", "🐻 Arctic Megafauna", "🌨 Tundra Transition"],
-                suggestions: [
-                    "Deploy permafrost monitoring arrays",
-                    "Activate wildfire suppression systems",
-                    "Implement carbon sink protection",
-                    "Launch Arctic research stations"
-                ],
-            },
-            zone6: {
-                name: "Southeast Asian Biodiversity Hotspot",
-                coords: { lat: 10, lon: 100, radiusKm: 1200 },
-                dominantVegetation: { icon: "🌴", type: "Tropical Palms" },
-                plants: ["🌴 Tropical Palms", "🌺 Endemic Orchids", "🦧 Primate Habitats", "🐅 Apex Predators"],
-                suggestions: [
-                    "Emergency biodiversity protection",
-                    "Deploy anti-deforestation satellites",
-                    "Activate species preservation protocols",
-                    "Launch sustainable development programs"
-                ],
-            },
-            zone7: {
-                name: "Australian Continental Monitoring",
-                coords: { lat: -25, lon: 135, radiusKm: 2000 },
-                dominantVegetation: { icon: "🌿", type: "Scrubland" },
-                plants: ["🌿 Fire-Adapted Flora", "🦘 Marsupial Habitats", "🌳 Eucalyptus Groves", "🔥 Recovery Zones"],
-                suggestions: [
-                    "Deploy fire prevention satellites",
-                    "Activate species recovery programs",
-                    "Implement water security protocols",
-                    "Launch climate resilience initiatives"
-                ],
-            },
-            zone8: {
-                name: "African Savanna Corridor",
-                coords: { lat: 5, lon: 30, radiusKm: 1800 },
-                dominantVegetation: { icon: "🌾", type: "Grassland Savanna" },
-                plants: ["🌳 Acacia Networks", "🦁 Apex Predators", "🌾 Grassland Matrix", "🐘 Megafauna Corridors"],
-                suggestions: [
-                    "Deploy wildlife tracking satellites",
-                    "Activate poaching prevention systems",
-                    "Implement drought relief protocols",
-                    "Launch ecosystem migration studies"
-                ],
-            },
-            zone9: {
-                name: "Arctic Tundra Research Outpost",
-                coords: { lat: 70, lon: -150, radiusKm: 1000 },
-                dominantVegetation: { icon: "❄", type: "Arctic Tundra" },
-                plants: ["🧊 Cryosphere Flora", "🌬 Lichen & Moss", "🦊 Arctic Fox Habitat", "🐋 Marine Life Watch"],
-                suggestions: [
-                    "Deploy ice sheet monitoring buoys",
-                    "Activate warming mitigation research",
-                    "Implement endangered species watch",
-                    "Launch ocean current study missions"
-                ],
-            }
+        const EONET_API_URL = "https://eonet.gsfc.nasa.gov/api/v2.1/events?status=open&limit=500";
+
+        // Maximum stress score used for normalization to 100%
+        const MAX_STRESS_SCORE = 200;
+
+        // Severity weights based on estimated impact (used to calculate Stress Score)
+        const SEVERITY_WEIGHTS = {
+            'Wildfires': 5,
+            'Floods': 4,
+            'Severe Storms': 4,
+            'Volcanoes': 7,
+            'Drought': 2,
+            'Dust and Haze': 1,
+            'Earthquakes': 6,
+            'Landslides': 3,
+            'Sea and Lake Ice': 1,
+            'Manmade': 1,
+            'Uncategorized': 1
         };
 
-        const sidebar = document.getElementById('sidebar');
-        const zones = document.querySelectorAll('.zone');
-        let currentActiveZone = null;
-        let earthEvents = []; // To store fetched EONET events
+        // Geographic Bounding Boxes for the 9 Zones (minLon, minLat, maxLon, maxLat)
+        const ZONES_BBOX = {
+            "North American Forests": [-125, 25, -70, 60],
+            "Amazon Rainforest": [-79, -20, -45, 6],
+            "Sahara Desert": [-17, 15, 40, 35],
+            "European Forests": [-10, 40, 60, 70],
+            "Siberian Taiga": [30, 50, 180, 70],
+            "SE Asian Rainforests": [95, -10, 150, 25],
+            "Australian Outback": [115, -35, 150, -15],
+            "African Savanna": [-18, -35, 50, 15],
+            "Arctic Tundra": [-180, 65, 180, 85]
+        };
 
-        // --- Utility Function to calculate distance (Haversine formula) ---
-        function haversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radius of Earth in kilometers
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
+        // Static descriptive data (kept from original to populate sidebar)
+        const STATIC_ZONE_DATA = {
+            "North American Forests": {
+                name: "North American Boreal Forests", dominantVegetation: { icon: "🌲", type: "Coniferous Forest" },
+                plants: ["🌲 Coniferous Biomass", "🍃 Deciduous Canopy", "🌿 Understory Matrix", "🦌 Wildlife Corridors"],
+                suggestions: ["Deploy reforestation satellites", "Implement carbon sequestration protocols", "Activate forest monitoring network", "Launch biodiversity preservation mission"],
+            },
+            "Amazon Rainforest": {
+                name: "Amazon Basin Critical Zone", dominantVegetation: { icon: "🌳", type: "Tropical Rainforest" },
+                plants: ["🌳 Tropical Canopy", "🌿 Medicinal Flora", "🌺 Endemic Species", "🦋 Pollinator Network"],
+                suggestions: ["Activate emergency conservation protocols", "Deploy deforestation monitoring satellites", "Implement indigenous protection programs", "Launch carbon offset initiatives"],
+            },
+            "Sahara Desert": {
+                name: "Sahara Expansion Zone", dominantVegetation: { icon: "🌵", type: "Desert Biome" },
+                plants: ["🌵 Desert Adaptation", "🌿 Xerophytic Species", "🦎 Arid Ecosystem"],
+                suggestions: ["Deploy desert regreening technology", "Activate solar collection arrays", "Implement water conservation protocols", "Launch climate adaptation research"],
+            },
+            "European Forests": {
+                name: "European Climate Sanctuary", dominantVegetation: { icon: "🌳", type: "Temperate Forest" },
+                plants: ["🌳 Temperate Hardwoods", "🍂 Seasonal Adaptation", "🌿 Managed Understory", "🐝 Pollinator Hubs"],
+                suggestions: ["Maintain Green Deal protocols", "Expand renewable energy grid", "Deploy urban forest networks", "Activate carbon neutrality systems"],
+            },
+            "Siberian Taiga": {
+                name: "Siberian Taiga Monitoring Zone", dominantVegetation: { icon: "🌲", type: "Boreal Taiga" },
+                plants: ["🌲 Boreal Conifers", "❄️ Permafrost Flora", "🐻 Arctic Megafauna", "🌨️ Tundra Transition"],
+                suggestions: ["Deploy permafrost monitoring arrays", "Activate wildfire suppression systems", "Implement carbon sink protection", "Launch Arctic research stations"],
+            },
+            "SE Asian Rainforests": {
+                name: "Southeast Asian Biodiversity Hotspot", dominantVegetation: { icon: "🌴", type: "Tropical Palms" },
+                plants: ["🌴 Tropical Palms", "🌺 Endemic Orchids", "🦧 Primate Habitats", "🐅 Apex Predators"],
+                suggestions: ["Emergency biodiversity protection", "Deploy anti-deforestation satellites", "Activate species preservation protocols", "Launch sustainable development programs"],
+            },
+            "Australian Outback": {
+                name: "Australian Continental Monitoring", dominantVegetation: { icon: "🌿", type: "Scrubland" },
+                plants: ["🌿 Fire-Adapted Flora", "🦘 Marsupial Habitats", "🌳 Eucalyptus Groves", "🔥 Recovery Zones"],
+                suggestions: ["Deploy fire prevention satellites", "Activate species recovery programs", "Implement water security protocols", "Launch climate resilience initiatives"],
+            },
+            "African Savanna": {
+                name: "African Savanna Corridor", dominantVegetation: { icon: "🌾", type: "Grassland Savanna" },
+                plants: ["🌳 Acacia Networks", "🦁 Apex Predators", "🌾 Grassland Matrix", "🐘 Megafauna Corridors"],
+                suggestions: ["Deploy wildlife tracking satellites", "Activate anti-poaching networks", "Implement water access systems", "Launch community conservation programs"],
+            },
+            "Arctic Tundra": {
+                name: "Arctic Ice Monitoring Station", dominantVegetation: { icon: "❄️", type: "Arctic Tundra" },
+                plants: ["❄️ Polar Vegetation", "🐻‍❄️ Arctic Megafauna", "🌨️ Tundra Ecosystems", "🧊 Ice-Dependent Species"],
+                suggestions: ["Deploy ice monitoring satellites", "Activate polar bear protection", "Implement carbon reduction protocols", "Launch Arctic research missions"],
+            },
+        };
+
+        // Global variable to store the live EONET data results
+        let liveZoneData = {};
+
+        // --- Geolocation Utility ---
+
+        function isPointInBBox(lon, lat, bbox) {
+            const [minLon, minLat, maxLon, maxLat] = bbox;
+            return lon >= minLon && lon <= maxLon && lat >= minLat && lat <= maxLat;
         }
 
-        // --- NASA API Data Fetching ---
-        async function fetchEonetData() {
+        function isEventInBBox(geometry, bbox) {
+            if (!geometry) return false;
+
+            for (const geo of geometry) {
+                const coords = geo.coordinates;
+                const type = geo.type;
+
+                if (type === 'Point' && coords.length === 2) {
+                    if (isPointInBBox(coords[0], coords[1], bbox)) return true;
+                } else if (type === 'Polygon' && coords.length > 0) {
+                    // Check if any part of the polygon is in the BBOX (simplified)
+                    for (const ring of coords) {
+                        for (const coordPair of ring) {
+                            if (isPointInBBox(coordPair[0], coordPair[1], bbox)) return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        // --- Core Data Fetching and Stress Calculation ---
+
+        async function fetchAndCalculateStress() {
             try {
                 const response = await fetch(EONET_API_URL);
                 if (!response.ok) {
-                    throw new Error(HTTP error! status: ${response.status});
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                earthEvents = data.events || [];
-                document.getElementById('prediction').innerHTML = <p style="color: #ffffff;">**LIVE DATA RECEIVED** - Tracking ${earthEvents.length} open global events.</p>;
-                console.log("EONET Data Fetched:", earthEvents);
-                updateZoneVisuals(earthEvents);
-            } catch (error) {
-                console.error("Error fetching EONET data:", error);
-                document.getElementById('prediction').innerHTML = <p style="color: #ff5555;">🚨 ERROR: Failed to fetch EONET data. Using fallback data simulation.</p>;
-                // Fallback to static data simulation if API fails
-                simulateFallbackData();
-            }
-        }
+                const events = data.events || [];
 
-        function getStressLevel(eventCount) {
-            let stress, health, cssClass;
-            let stressValue = Math.min(100, eventCount * 15); // Scale event count to 0-100%
+                const results = {};
 
-            if (eventCount >= 7) {
-                stress = stressValue;
-                health = "Critical Alert - High Event Density";
-                cssClass = "danger";
-            } else if (eventCount >= 3) {
-                stress = stressValue;
-                health = "Moderate Stress - Elevated Events";
-                cssClass = "moderate";
-            } else {
-                stress = stressValue;
-                health = "Optimal - Low Event Count";
-                cssClass = "healthy";
-            }
+                // 1. Initialize results structure for all zones
+                for (const zoneName in ZONES_BBOX) {
+                    results[zoneName] = {
+                        stressScore: 0,
+                        eventDetails: {},
+                        totalEvents: 0
+                    };
+                }
 
-            return { stress, health, cssClass };
-        }
+                // 2. Process all events
+                for (const event of events) {
+                    const categoryName = event.categories[0]?.title || 'Uncategorized';
+                    const weight = SEVERITY_WEIGHTS[categoryName] || SEVERITY_WEIGHTS['Uncategorized'];
 
-        function updateZoneVisuals(events) {
-            zones.forEach(zoneElement => {
-                const zoneId = zoneElement.id;
-                const zoneInfo = zoneData[zoneId];
-                if (!zoneInfo) return;
+                    // 3. Check for zone containment and accumulate score
+                    for (const zoneName in ZONES_BBOX) {
+                        if (isEventInBBox(event.geometries, ZONES_BBOX[zoneName])) {
+                            // Accumulate stress score
+                            results[zoneName].stressScore += weight;
+                            results[zoneName].totalEvents += 1;
 
-                const zoneLat = zoneInfo.coords.lat;
-                const zoneLon = zoneInfo.coords.lon;
-                const zoneRadiusKm = zoneInfo.coords.radiusKm;
-                let eventCount = 0;
-                let mostSevereEvent = "No major events detected.";
-
-                // Count events within the zone's radius
-                events.forEach(event => {
-                    if (event.geometries && event.geometries.length > 0) {
-                        const geometry = event.geometries[0];
-                        let eventLat, eventLon;
-
-                        // EONET geometries can be points or polygons. We'll use the first point.
-                        if (geometry.type === 'Point' && geometry.coordinates.length === 2) {
-                            eventLon = geometry.coordinates[0];
-                            eventLat = geometry.coordinates[1];
-                        } else if (geometry.type === 'Polygon' && geometry.coordinates[0].length > 0) {
-                            // Simple centroid approximation for polygons (first coordinate)
-                            eventLon = geometry.coordinates[0][0][0];
-                            eventLat = geometry.coordinates[0][0][1];
-                        }
-
-                        if (eventLat && eventLon) {
-                            const distance = haversine(zoneLat, zoneLon, eventLat, eventLon);
-                            if (distance <= zoneRadiusKm) {
-                                eventCount++;
-                                mostSevereEvent = event.title;
+                            // Track event counts by category for the sidebar
+                            if (!results[zoneName].eventDetails[categoryName]) {
+                                results[zoneName].eventDetails[categoryName] = 0;
                             }
+                            results[zoneName].eventDetails[categoryName] += 1;
+
+                            // Important: An event can overlap multiple zones, but to prevent
+                            // overcounting for the primary visualization, we break here.
+                            // EONET events often cover wide areas.
+                            break;
                         }
                     }
-                });
+                }
 
-                const { stress, health, cssClass } = getStressLevel(eventCount);
+                // 4. Determine class and health status (based on percentage)
+                for (const zoneName in results) {
+                    const score = results[zoneName].stressScore;
 
-                // Update DOM elements for the zone
-                zoneElement.classList.remove('healthy', 'moderate', 'danger');
-                zoneElement.classList.add(cssClass);
-                zoneElement.setAttribute('data-stress', stress);
-                zoneElement.setAttribute('data-event-count', eventCount);
-                zoneElement.setAttribute('data-health-status', health);
-                zoneElement.setAttribute('data-most-severe-event', mostSevereEvent);
+                    // Normalize the raw score to a percentage based on MAX_STRESS_SCORE
+                    const stressPercentage = Math.min(100, Math.round((score / MAX_STRESS_SCORE) * 100));
 
-                // Dynamically adjust size based on stress (visual feedback)
-                const baseSize = parseInt(zoneElement.getAttribute('data-base-size'));
-                const newSize = baseSize + (stress / 10);
-                zoneElement.style.width = ${newSize}px;
-                zoneElement.style.height = ${newSize}px;
-            });
+                    let healthStatus = "Optimal Ecosystem Performance";
+                    let cssClass = "healthy";
 
-            // Re-render the sidebar if a zone is currently selected
-            if (currentActiveZone) {
-                renderSidebar(currentActiveZone);
+                    if (stressPercentage > 30) {
+                        cssClass = "danger";
+                        healthStatus = "CRITICAL: High Cumulative Stress Detected";
+                    } else if (stressPercentage > 15) {
+                        cssClass = "moderate";
+                        healthStatus = "WARNING: Moderate Stress Zone";
+                    } else {
+                        cssClass = "healthy";
+                        healthStatus = "Optimal Ecosystem Performance";
+                    }
+
+                    results[zoneName].stressPercentage = stressPercentage; // Store percentage
+                    results[zoneName].health = healthStatus;
+                    results[zoneName].class = cssClass;
+                }
+
+                liveZoneData = results;
+                updateMapVisualization();
+
+            } catch (error) {
+                console.error("EONET API or calculation failed:", error);
+                document.getElementById('stressPercent').textContent = "ERROR: Failed to load live EONET data.";
             }
         }
 
-        // --- Fallback Simulation (If NASA API Fails) ---
-        function simulateFallbackData() {
-            zones.forEach(zoneElement => {
-                const eventCount = Math.floor(Math.random() * 10); // Random events 0-9
-                const { stress, health, cssClass } = getStressLevel(eventCount);
+        // --- Visualization & Interaction ---
 
-                zoneElement.classList.remove('healthy', 'moderate', 'danger');
-                zoneElement.classList.add(cssClass);
-                zoneElement.setAttribute('data-stress', stress);
-                zoneElement.setAttribute('data-event-count', eventCount);
-                zoneElement.setAttribute('data-health-status', health + " (SIMULATED)");
-                zoneElement.setAttribute('data-most-severe-event', Simulated Event: ${eventCount} local incidents);
+        function updateMapVisualization() {
+            document.querySelectorAll('.zone').forEach(zoneElement => {
+                const zoneName = zoneElement.getAttribute('data-zone');
+                const data = liveZoneData[zoneName];
 
-                const baseSize = parseInt(zoneElement.getAttribute('data-base-size'));
-                const newSize = baseSize + (stress / 10);
-                zoneElement.style.width = ${newSize}px;
-                zoneElement.style.height = ${newSize}px;
+                if (data) {
+                    // Update CSS class for color/pulse
+                    zoneElement.className = `zone ${data.class}`;
+
+                    // Dynamic Size: Scale by event count (e.g., 40px base + 2px per event up to a max)
+                    const baseSize = 40;
+                    const maxEvents = 50;
+                    const size = Math.min(baseSize + data.totalEvents * 2, baseSize + maxEvents * 2);
+                    zoneElement.style.width = `${size}px`;
+                    zoneElement.style.height = `${size}px`;
+                    zoneElement.style.lineHeight = `${size}px`;
+
+                    zoneElement.title = `${zoneName}: ${data.health} (Stress: ${data.stressPercentage}%, Raw Score: ${data.stressScore}, Events: ${data.totalEvents})`;
+                }
             });
-
-            if (currentActiveZone) {
-                renderSidebar(currentActiveZone);
-            }
+            document.getElementById('stressPercent').textContent = "LIVE EONET DATA LOADED.";
+            document.getElementById('controls').style.display = 'block';
         }
 
-        // --- Sidebar & Interaction Logic ---
-        function renderSidebar(zoneElement) {
-            const zoneId = zoneElement.id;
-            const data = zoneData[zoneId];
+        function showZoneInfo(zoneElement) {
+            const zoneName = zoneElement.getAttribute('data-zone');
+            const liveData = liveZoneData[zoneName];
+            const staticData = STATIC_ZONE_DATA[zoneName];
 
-            const stress = zoneElement.getAttribute('data-stress');
-            const healthStatus = zoneElement.getAttribute('data-health-status');
-            const eventCount = zoneElement.getAttribute('data-event-count');
-            const mostSevereEvent = zoneElement.getAttribute('data-most-severe-event');
-            const cssClass = zoneElement.classList.contains('danger') ? 'negative' : (zoneElement.classList.contains('moderate') ? 'moderate' : 'positive');
+            if (!liveData || !staticData) return;
 
-            // 1. Zone Name
-            document.getElementById('zoneName').textContent = 🛰 ${data.name};
+            // 1. Update Zone Name
+            document.getElementById('zoneName').textContent = `🛰️ ${staticData.name}`;
 
             // 2. Stress Analysis
             const stressFill = document.getElementById('stressFill');
-            stressFill.style.width = ${stress}%;
-            stressFill.style.background = linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%); // Keep gradient for color scale
-            stressFill.style.filter = hue-rotate(${(100 - stress) * 1.2}deg); // Adjust color based on stress
-            document.getElementById('stressPercent').innerHTML = **${stress}% Stress Level** <br> Status: <span style="font-family:'Exo 2', sans-serif;">${healthStatus}</span>;
+            const stressPercentElement = document.getElementById('stressPercent');
 
-            // 3. Biosphere Health Matrix
-            document.getElementById('plantHealth').textContent = Dominant Type: ${data.dominantVegetation.icon} ${data.dominantVegetation.type};
-            const plantLegendHtml = data.plants.map(p => <div class="plant-item">${p}</div>).join('');
-            document.getElementById('plantLegend').innerHTML = plantLegendHtml;
+            // Use the pre-calculated percentage
+            const percentage = liveData.stressPercentage;
+            const score = liveData.stressScore;
 
-            // 4. Mission Recommendations
-            const suggestionsHtml = data.suggestions.map(s => <li>${s}</li>).join('');
-            document.getElementById('suggestions').innerHTML = suggestionsHtml;
+            stressFill.style.width = `${percentage}%`;
 
-            // 5. Predictive Analysis (Dynamic EONET Data)
-            const predictionEl = document.getElementById('prediction');
-            predictionEl.className = prediction ${cssClass};
-            predictionEl.innerHTML = `
-                <p style="color: #ffffff;">
-                    <strong>CURRENT ALERT: ${eventCount} Active Event(s) Detected!</strong>
-                </p>
-                <p style="font-size: 11px;">
-                    *Most Severe Incident:* ${mostSevereEvent}
-                </p>
-                <p style="font-size: 11px; opacity: 0.8;">
-                    Events are sourced from the NASA EONET API and indicate real-time natural hazards.
-                </p>
+            // Dynamic color logic for the fill bar
+            if (percentage > 30) {
+                stressFill.style.background = 'linear-gradient(90deg, #ff0000 0%, #ff6600 100%)';
+            } else if (percentage > 15) {
+                stressFill.style.background = 'linear-gradient(90deg, #ffaa00 0%, #ffdd00 100%)';
+            } else {
+                stressFill.style.background = 'linear-gradient(90deg, #00ff00 0%, #66ff66 100%)';
+            }
+
+            stressPercentElement.textContent = `${percentage}% STRESS LEVEL - ${liveData.health.toUpperCase()} (Raw Score: ${score})`;
+
+            // 3. Event Summary
+            const eventDetails = liveData.eventDetails;
+            let eventHtml = '';
+
+            if (liveData.totalEvents > 0) {
+                eventHtml += `<p>Total Open Events: <strong>${liveData.totalEvents}</strong></p><ul>`;
+                for (const category in eventDetails) {
+                    eventHtml += `<li>${category}: <strong>${eventDetails[category]}</strong> (Weight: ${SEVERITY_WEIGHTS[category] || 1})</li>`;
+                }
+                eventHtml += '</ul>';
+            } else {
+                eventHtml = '<p>No recent EONET events detected in this zone.</p>';
+            }
+            document.getElementById('eventSummary').innerHTML = eventHtml;
+
+            // 4. Biosphere Health (Static Descriptive Data)
+            document.getElementById('plantHealth').innerHTML = `
+                <div class="dominant-vegetation">
+                    <div class="icon">${staticData.dominantVegetation.icon}</div>
+                    <div class="label">${staticData.dominantVegetation.type}</div>
+                </div>
+                System Status: ${liveData.health}
             `;
 
+            const plantLegend = document.getElementById('plantLegend');
+            plantLegend.innerHTML = staticData.plants.map(plant =>
+                `<div class="plant-item">${plant}</div>`
+            ).join('');
+
+            // 5. Mission-style Suggestions (Static Descriptive Data)
+            const suggestions = document.getElementById('suggestions');
+            suggestions.innerHTML = staticData.suggestions.map(suggestion =>
+                `<li>🚀 ${suggestion}</li>`
+            ).join('');
+
+            // Show sidebar with animation
             sidebar.classList.add('active');
         }
 
-        zones.forEach(zone => {
+
+        // --- Original Pan/Zoom/UI Controls (Kept intact) ---
+
+        let currentZoom = 1;
+        let isDragging = false;
+        let startX, startY, currentX = 0, currentY = 0;
+
+        const earthImage = document.getElementById('earthImage');
+        const sidebar = document.getElementById('sidebar');
+
+        // Zone Click Handler
+        document.querySelectorAll('.zone').forEach(zone => {
             zone.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent map click event from triggering if one exists
-                currentActiveZone = zone;
-                renderSidebar(zone);
+                showZoneInfo(e.target);
             });
         });
 
+        // Close Sidebar Handler
         document.getElementById('closeSidebar').addEventListener('click', () => {
             sidebar.classList.remove('active');
-            currentActiveZone = null;
         });
 
-        // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initiate data fetch
-            fetchEonetData();
-            // Your existing particle and other static animation setup can remain here
+        // Zoom Controls
+        document.getElementById('zoomIn').addEventListener('click', () => {
+            currentZoom = Math.min(currentZoom * 1.3, 4);
+            updateMapTransform();
         });
 
-        // The time slider logic is now purely aesthetic since EONET provides current data
-        const timeSlider = document.getElementById('timeSlider');
-        const currentYearDisplay = document.getElementById('currentYear');
-        timeSlider.addEventListener('input', (e) => {
-            currentYearDisplay.textContent = e.target.value;
-            // Since the API only returns current events, this only updates the text
+        document.getElementById('zoomOut').addEventListener('click', () => {
+            currentZoom = Math.max(currentZoom / 1.3, 0.8);
+            updateMapTransform();
         });
 
-        // --- Earth Drag and Zoom Logic (Keep existing functionality) ---
+        document.getElementById('resetZoom').addEventListener('click', () => {
+            currentZoom = 1;
+            currentX = 0;
+            currentY = 0;
+            updateMapTransform();
+        });
 
-        const earthImage = document.getElementById('earthImage');
-        let isDragging = false;
-        let startX, startY, initialX, initialY;
-        let scale = 1.0;
-        const maxScale = 4;
-        const minScale = 1;
-
-        earthImage.style.transformOrigin = 'center center'; // Ensure proper scaling origin
-
-        // Dragging logic
+        // Pan/Drag Functionality
         earthImage.addEventListener('mousedown', (e) => {
             isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            const style = window.getComputedStyle(earthImage);
-            const matrix = new WebKitCSSMatrix(style.transform);
-            initialX = matrix.e || 0;
-            initialY = matrix.f || 0;
+            startX = e.clientX - currentX;
+            startY = e.clientY - currentY;
             earthImage.style.cursor = 'grabbing';
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            e.preventDefault();
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-
-            let newX = initialX + dx;
-            let newY = initialY + dy;
-
-            // Apply limits to dragging based on current scale to prevent seeing outside the map
-            const imgWidth = earthImage.clientWidth * scale;
-            const imgHeight = earthImage.clientHeight * scale;
-            const containerWidth = earthImage.parentElement.clientWidth;
-            const containerHeight = earthImage.parentElement.clientHeight;
-
-            const maxX = Math.max(0, (imgWidth - containerWidth) / 2);
-            const maxY = Math.max(0, (imgHeight - containerHeight) / 2);
-
-            // Correct for initial offset (translate starts at 0,0, but image is centered by object-fit)
-            const offsetX = (containerWidth - imgWidth) / 2;
-            const offsetY = (containerHeight - imgHeight) / 2;
-
-            newX = Math.min(Math.max(newX, -maxX), maxX);
-            newY = Math.min(Math.max(newY, -maxY), maxY);
-
-            earthImage.style.transform = scale(${scale}) translate(${newX}px, ${newY}px);
-
-            // Reposition zones based on image translation
-            zones.forEach(zone => {
-                const zoneContainer = zone.parentElement;
-                const zoneX = parseFloat(zone.style.left);
-                const zoneY = parseFloat(zone.style.top);
-
-                // Calculate the pixel position relative to the container for the original 100% size
-                const originalX = (zoneX / 100) * containerWidth;
-                const originalY = (zoneY / 100) * containerHeight;
-
-                // Calculate the final position considering scale and translation
-                // This is a complex step for a purely visual overlay, a mapping library is usually better.
-                // For simplicity here, we'll keep the zone overlay fixed over the image's original position.
-                // To truly track the map, you'd need to apply the same transform to the zone-overlay,
-                // but since its children are positioned with %s, this is tricky.
-
-                // Easiest solution: Apply the transform to the parent container of the zones as well.
-                const zoneOverlay = document.querySelector('.zone-overlay');
-                zoneOverlay.style.transform = scale(${scale}) translate(${newX}px, ${newY}px);
-                zoneOverlay.style.transition = 'transform 0.05s ease-out';
-            });
+            currentX = e.clientX - startX;
+            currentY = e.clientY - startY;
+            updateMapTransform();
         });
 
         document.addEventListener('mouseup', () => {
@@ -1073,49 +998,48 @@
             earthImage.style.cursor = 'grab';
         });
 
-        // Zoom logic
-        function updateScale(newScale) {
-            scale = Math.min(maxScale, Math.max(minScale, newScale));
-
-            const style = window.getComputedStyle(earthImage);
-            const matrix = new WebKitCSSMatrix(style.transform);
-            let currentX = matrix.e || 0;
-            let currentY = matrix.f || 0;
-
-            // Simple reset to center for basic zoom implementation
-            if (scale === 1.0) {
-                currentX = 0;
-                currentY = 0;
-            }
-
-            earthImage.style.transform = scale(${scale}) translate(${currentX}px, ${currentY}px);
-            const zoneOverlay = document.querySelector('.zone-overlay');
-            zoneOverlay.style.transform = scale(${scale}) translate(${currentX}px, ${currentY}px);
-
-        }
-
-        document.getElementById('zoomIn').addEventListener('click', () => updateScale(scale + 0.5));
-        document.getElementById('zoomOut').addEventListener('click', () => updateScale(scale - 0.5));
-        document.getElementById('resetZoom').addEventListener('click', () => {
-            updateScale(1.0);
-            const zoneOverlay = document.querySelector('.zone-overlay');
-            zoneOverlay.style.transform = 'scale(1) translate(0px, 0px)';
+        // Wheel Zoom
+        earthImage.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            currentZoom = Math.max(0.8, Math.min(4, currentZoom * delta));
+            updateMapTransform();
         });
 
-        // --- Particle Generation (Keep existing functionality) ---
+        function updateMapTransform() {
+            earthImage.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentZoom})`;
 
-        const particlesContainer = document.getElementById('particles');
-        const numParticles = 30;
-
-        for (let i = 0; i < numParticles; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = ${Math.random() * 100}vw;
-            particle.style.top = ${Math.random() * 100}vh;
-            particle.style.animationDelay = ${Math.random() * 10}s;
-            particlesContainer.appendChild(particle);
+            // Update zone overlay to match map transform
+            const zoneOverlay = document.querySelector('.zone-overlay');
+            zoneOverlay.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentZoom})`;
         }
 
+        // Initialize dynamic data fetching on load
+        fetchAndCalculateStress();
+
+        // Add periodic satellite data updates (original function)
+        setInterval(() => {
+            const dataStream = document.querySelector('.data-stream');
+            const speed = (Math.random() * 200 + 700).toFixed(1);
+            dataStream.textContent = `DATA STREAM: ${speed} MB/s`;
+        }, 2000);
+
+        // Create beautiful floating particles (original function)
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles
+        createParticles();
     </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98941920003ae30e',t:'MTc1OTU3NDgxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
