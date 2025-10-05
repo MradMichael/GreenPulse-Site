@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NASA Earth Climate Observatory - Interactive Mission Control</title>
+    <!-- Favicon / Tab icon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="green-pulse.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="green-pulse.png">
+    <link rel="apple-touch-icon" href="green-pulse.png">
+    <meta name="theme-color" content="#0f1419">
+
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+   /*ADDED*/
+    /*TITLE*/
+    
     <style>
         body {
             box-sizing: border-box;
@@ -17,6 +26,33 @@
             position: relative;
         }
    /*ADDED*/
+            .brand-wrap {
+              position: absolute;
+              top: 20px; left: 20px;
+              display: flex; align-items: center; gap: 10px;
+              z-index: 160;
+            }
+            
+            .brand-logo {
+              height: 40px; width: auto;
+              border-radius: 8px;
+              box-shadow: 0 0 12px rgba(0,255,120,0.4);
+              background: rgba(0,0,0,0.2);
+              padding: 4px;                 /* tiny frame so the logo doesn’t blend into space */
+            }
+            
+            .brand-title {
+              font-family: 'Orbitron', monospace;
+              font-size: 22px; font-weight: 900; letter-spacing: 3px;
+              color: #90ff90;
+              padding: 8px 14px;
+              border: 1px solid #90ff90; border-radius: 10px;
+              background: rgba(20,40,20,0.9);
+              box-shadow: 0 0 20px rgba(144,255,144,0.3);
+            }
+
+
+        
                 .api-banner {
                 position: absolute;
                 left: 20px;
@@ -603,7 +639,12 @@
     <div class="starfield"></div>
     <div class="particles" id="particles"></div>
     
-    <div class="simple-title">🌍 GREEN PULSE</div>
+   /*<div class="simple-title">🌍 GREEN PULSE</div>*/
+    <div class="brand-wrap">
+          <img src="green-pulse.png" alt="Green Pulse" class="brand-logo">
+          <div class="brand-title">GREEN PULSE</div>
+        </div>
+
 
     <div class="container">
         <div class="map-container">
