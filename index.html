@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NASA Earth Climate Observatory - Interactive Mission Control</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
             box-sizing: border-box;
@@ -25,7 +25,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background:
+            background: 
                 radial-gradient(2px 2px at 20px 30px, #eee, transparent),
                 radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
                 radial-gradient(1px 1px at 90px 40px, #fff, transparent),
@@ -108,7 +108,7 @@
             border: 2px solid #90ff90;
             border-radius: 15px;
             margin: 10px;
-            box-shadow:
+            box-shadow: 
                 0 0 30px rgba(144,255,144,0.3),
                 inset 0 0 30px rgba(0,100,50,0.1);
         }
@@ -147,26 +147,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 24px;
             color: white;
             text-shadow: 0 0 10px rgba(0,0,0,0.8);
-            /* Initial size override for dynamic scaling */
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
         }
-
-        /* Specific positioning from original file, but removed specific size to allow dynamic scaling */
-        #zone1 { top: 15%; left: 15%; }
-        #zone2 { top: 45%; left: 25%; }
-        #zone3 { top: 35%; left: 48%; }
-        #zone4 { top: 25%; left: 48%; }
-        #zone5 { top: 18%; left: 60%; }
-        #zone6 { top: 40%; left: 75%; }
-        #zone7 { top: 65%; left: 75%; }
-        #zone8 { top: 45%; left: 50%; }
-        #zone9 { top: 8%; left: 20%; }
-
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.3); }
@@ -202,7 +186,7 @@
             top: 20px;
             left: 20px;
             font-family: 'Orbitron', monospace;
-            font-size: 16px;
+            font-size: 24px;
             font-weight: 900;
             color: #90ff90;
             text-shadow: 0 0 10px rgba(144,255,144,0.5);
@@ -219,18 +203,17 @@
         .controls {
             position: absolute;
             top: 80px;
-                left: 20px;
+            left: 20px;
             background: linear-gradient(135deg, rgba(0,40,20,0.95) 0%, rgba(0,100,50,0.9) 100%);
             padding: 15px;
             border-radius: 10px;
             border: 1px solid #90ff90;
-            box-shadow:
+            box-shadow: 
                 0 0 20px rgba(144,255,144,0.3),
                 inset 0 0 20px rgba(0,100,50,0.1);
             z-index: 100;
             backdrop-filter: blur(10px);
             width: 200px;
-            display: none; /* Hide static temporal control as it's not supported by V2.1 live data */
         }
 
         .controls h3 {
@@ -242,9 +225,36 @@
             letter-spacing: 1px;
             text-shadow: 0 0 5px rgba(144,255,144,0.5);
         }
-        /* Hidden elements from static version */
-        .time-slider, .year-display { display: none; }
 
+        .time-slider {
+            width: 160px;
+            margin: 10px 0;
+            background: transparent;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #ff0000 0%, #ffff00 50%, #00ff00 100%);
+            outline: none;
+        }
+
+        .time-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #90ff90;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(144,255,144,0.8);
+        }
+
+        .year-display {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: #90ff90;
+            text-shadow: 0 0 5px rgba(0,255,0,0.5);
+            margin-top: 8px;
+        }
 
         .zoom-controls {
             position: absolute;
@@ -278,7 +288,7 @@
         }
 
         .sidebar {
-            width: 320px; /* Increased width for better content display */
+            width: 280px;
             background: linear-gradient(180deg, rgba(0,30,10,0.95) 0%, rgba(0,60,30,0.9) 100%);
             backdrop-filter: blur(15px);
             padding: 20px;
@@ -297,7 +307,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background:
+            background: 
                 radial-gradient(circle at 20% 20%, rgba(144,255,144,0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(144,255,144,0.1) 0%, transparent 50%);
             pointer-events: none;
@@ -351,7 +361,7 @@
 
         .stress-fill {
             height: 100%;
-            transition: width 0.8s ease, background 0.8s ease; /* Added background transition */
+            transition: width 0.8s ease;
             border-radius: 10px;
             background: linear-gradient(90deg, #00ff00 0%, #ffff00 50%, #ff0000 100%);
             box-shadow: 0 0 10px rgba(255,255,255,0.3);
@@ -393,7 +403,7 @@
         }
 
         .dominant-vegetation .icon {
-            font-size: 16px;
+            font-size: 24px;
         }
 
         .dominant-vegetation .label {
@@ -450,7 +460,7 @@
             background: rgba(0,100,50,0.8);
             border: 2px solid #00ff00;
             border-radius: 50%;
-            font-size: 16px;
+            font-size: 24px;
             cursor: pointer;
             color: #90ff90;
             font-family: 'Orbitron', monospace;
@@ -556,411 +566,409 @@
 <body>
     <div class="starfield"></div>
     <div class="particles" id="particles"></div>
-
+    
     <div class="simple-title">🌍 GREEN PULSE</div>
 
     <div class="container">
         <div class="map-container">
-            <img src="https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg"
-                 alt="NASA Earth Satellite View"
-                 class="earth-image"
+            <img src="https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg" 
+                 alt="NASA Earth Satellite View" 
+                 class="earth-image" 
                  id="earthImage"
                  onerror="this.src=''; this.alt='Loading satellite imagery...'; this.style.background='linear-gradient(45deg, #001122 0%, #003366 100%)'; this.style.display='block';">
-
+            
             <div class="zone-overlay">
-                <div class="zone healthy" id="zone1" data-zone="North American Forests">🌲</div>
-                <div class="zone moderate" id="zone2" data-zone="Amazon Rainforest">🌳</div>
-                <div class="zone danger" id="zone3" data-zone="Sahara Desert">🌵</div>
-                <div class="zone healthy" id="zone4" data-zone="European Forests">🌳</div>
-                <div class="zone moderate" id="zone5" data-zone="Siberian Taiga">🌲</div>
-                <div class="zone danger" id="zone6" data-zone="SE Asian Rainforests">🌴</div>
-                <div class="zone danger" id="zone7" data-zone="Australian Outback">🌿</div>
-                <div class="zone moderate" id="zone8" data-zone="African Savanna">🌾</div>
-                <div class="zone moderate" id="zone9" data-zone="Arctic Tundra">❄️</div>
+                <!-- Climate zones positioned over real Earth -->
+                <div class="zone healthy" id="zone1" style="top: 15%; left: 15%; width: 80px; height: 80px;" data-zone="North American Forests" data-base-size="80">🌲</div>
+                <div class="zone moderate" id="zone2" style="top: 45%; left: 25%; width: 90px; height: 90px;" data-zone="Amazon Rainforest" data-base-size="90">🌳</div>
+                <div class="zone danger" id="zone3" style="top: 35%; left: 48%; width: 70px; height: 70px;" data-zone="Sahara Desert" data-base-size="70">🌵</div>
+                <div class="zone healthy" id="zone4" style="top: 25%; left: 48%; width: 60px; height: 60px;" data-zone="European Forests" data-base-size="60">🌳</div>
+                <div class="zone moderate" id="zone5" style="top: 18%; left: 60%; width: 100px; height: 100px;" data-zone="Siberian Taiga" data-base-size="100">🌲</div>
+                <div class="zone danger" id="zone6" style="top: 40%; left: 75%; width: 75px; height: 75px;" data-zone="SE Asian Rainforests" data-base-size="75">🌴</div>
+                <div class="zone danger" id="zone7" style="top: 65%; left: 75%; width: 85px; height: 85px;" data-zone="Australian Outback" data-base-size="85">🌿</div>
+                <div class="zone moderate" id="zone8" style="top: 45%; left: 50%; width: 80px; height: 80px;" data-zone="African Savanna" data-base-size="80">🌾</div>
+                <div class="zone moderate" id="zone9" style="top: 8%; left: 20%; width: 120px; height: 60px;" data-zone="Arctic Tundra" data-base-size="120">❄️</div>
 
             </div>
-
+            
             <div class="satellite-indicator">🛰️ LANDSAT-9 ACTIVE</div>
             <div class="data-stream">DATA STREAM: 847.2 MB/s</div>
-
-            <div class="controls" id="controls">
+            
+            <div class="controls" id="controls" style="display: none;">
                 <h3>🕐 Temporal Analysis</h3>
-                <div class="year-display">DATA SOURCE: <span id="currentYear">LIVE EONET V2.1</span></div>
+                <label for="timeSlider" style="color: #ffffff; font-family: 'Exo 2', sans-serif;">Satellite Archive:</label>
+                <input type="range" id="timeSlider" class="time-slider" min="2014" max="2024" value="2024">
+                <div class="year-display">YEAR: <span id="currentYear">2024</span></div>
             </div>
-
+            
             <div class="zoom-controls">
                 <button class="zoom-btn" id="zoomIn">+</button>
                 <button class="zoom-btn" id="zoomOut">−</button>
                 <button class="zoom-btn" id="resetZoom">🌍</button>
             </div>
-
+            
             <div class="legend">
-                <h4>🌡️ Climate Stress Matrix (Percentage)</h4>
+                <h4>🌡️ Climate Stress Matrix</h4>
                 <div class="legend-item">
                     <div class="legend-color" style="background: radial-gradient(circle, rgba(0,255,0,0.8) 0%, rgba(100,255,100,0.4) 100%);"></div>
-                    <span>Optimal Ecosystem (Score < 15%)</span>
+                    <span>Optimal Ecosystem</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: radial-gradient(circle, rgba(255,165,0,0.8) 0%, rgba(255,200,100,0.4) 100%);"></div>
-                    <span>Moderate Stress (15% - 30%)</span>
+                    <span>Moderate Stress</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-color" style="background: radial-gradient(circle, rgba(255,0,0,0.8) 0%, rgba(255,100,100,0.4) 100%);"></div>
-                    <span>Critical Alert (Score > 30%)</span>
+                    <span>Critical Alert</span>
                 </div>
             </div>
         </div>
-
+        
         <div class="sidebar" id="sidebar">
             <button class="close-btn" id="closeSidebar">✕</button>
             <h2 id="zoneName">🛰️ Select Target Zone</h2>
-
+            
             <div class="info-section">
-                <h3>🌡️ Climate Stress Analysis (EONET Data)</h3>
+                <h3>🌡️ Climate Stress Analysis</h3>
                 <div class="stress-meter">
                     <div class="stress-fill" id="stressFill"></div>
                 </div>
-                <p id="stressPercent" style="color: #00ff00; font-family: 'Orbitron', monospace;">Loading live event data...</p>
+                <p id="stressPercent" style="color: #00ff00; font-family: 'Orbitron', monospace;">Awaiting satellite data...</p>
             </div>
-
+            
             <div class="info-section">
-                <h3>🔥 Event Summary</h3>
-                <p id="eventSummary" style="color: #ffffff;">No recent events detected.</p>
-            </div>
-
-            <div class="info-section">
-                <h3>🌱 Biosphere Health Matrix (Static)</h3>
-                <p id="plantHealth" style="color: #ffffff;">Ecosystem parameters based on mission profile.</p>
+                <h3>🌱 Biosphere Health Matrix</h3>
+                <p id="plantHealth" style="color: #ffffff;">Scanning ecosystem parameters...</p>
                 <div class="plant-legend" id="plantLegend"></div>
             </div>
-
+            
             <div class="info-section">
-                <h3>🚀 Mission Recommendations (Static)</h3>
+                <h3>🚀 Mission Recommendations</h3>
                 <ul id="suggestions" style="color: #ffffff; padding-left: 20px;">
                     <li>Select zone for mission parameters</li>
                 </ul>
+            </div>
+            
+            <div class="info-section">
+                <h3>🔮 Predictive Analysis (T+6 Months)</h3>
+                <div class="prediction" id="prediction">
+                    <p style="color: #ffffff;">AI prediction model loading...</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- NASA EONET INTEGRATION (New Dynamic Logic) ---
-
-        const EONET_API_URL = "https://eonet.gsfc.nasa.gov/api/v2.1/events?status=open&limit=500";
-
-        // Maximum stress score used for normalization to 100%
-        const MAX_STRESS_SCORE = 200;
-
-        // Severity weights based on estimated impact (used to calculate Stress Score)
-        const SEVERITY_WEIGHTS = {
-            'Wildfires': 5,
-            'Floods': 4,
-            'Severe Storms': 4,
-            'Volcanoes': 7,
-            'Drought': 2,
-            'Dust and Haze': 1,
-            'Earthquakes': 6,
-            'Landslides': 3,
-            'Sea and Lake Ice': 1,
-            'Manmade': 1,
-            'Uncategorized': 1
-        };
-
-        // Geographic Bounding Boxes for the 9 Zones (minLon, minLat, maxLon, maxLat)
-        const ZONES_BBOX = {
-            "North American Forests": [-125, 25, -70, 60],
-            "Amazon Rainforest": [-79, -20, -45, 6],
-            "Sahara Desert": [-17, 15, 40, 35],
-            "European Forests": [-10, 40, 60, 70],
-            "Siberian Taiga": [30, 50, 180, 70],
-            "SE Asian Rainforests": [95, -10, 150, 25],
-            "Australian Outback": [115, -35, 150, -15],
-            "African Savanna": [-18, -35, 50, 15],
-            "Arctic Tundra": [-180, 65, 180, 85]
-        };
-
-        // Static descriptive data (kept from original to populate sidebar)
-        const STATIC_ZONE_DATA = {
-            "North American Forests": {
-                name: "North American Boreal Forests", dominantVegetation: { icon: "🌲", type: "Coniferous Forest" },
+        // Enhanced zone data with NASA-style descriptions
+        const zoneData = {
+            zone1: {
+                name: "North American Boreal Forests",
+                dominantVegetation: { icon: "🌲", type: "Coniferous Forest" },
+                data: {
+                    2024: { stress: 25, health: "Stable Ecosystem", class: "healthy" },
+                    2020: { stress: 20, health: "Optimal Conditions", class: "healthy" },
+                    2016: { stress: 15, health: "Peak Performance", class: "healthy" },
+                    2014: { stress: 12, health: "Pristine State", class: "healthy" }
+                },
                 plants: ["🌲 Coniferous Biomass", "🍃 Deciduous Canopy", "🌿 Understory Matrix", "🦌 Wildlife Corridors"],
-                suggestions: ["Deploy reforestation satellites", "Implement carbon sequestration protocols", "Activate forest monitoring network", "Launch biodiversity preservation mission"],
+                suggestions: [
+                    "Deploy reforestation satellites",
+                    "Implement carbon sequestration protocols",
+                    "Activate forest monitoring network",
+                    "Launch biodiversity preservation mission"
+                ],
+                prediction: {
+                    trend: "positive",
+                    text: "Satellite data indicates successful conservation protocols. Forest biomass projected to increase 8% based on current trajectory and climate models."
+                }
             },
-            "Amazon Rainforest": {
-                name: "Amazon Basin Critical Zone", dominantVegetation: { icon: "🌳", type: "Tropical Rainforest" },
+            zone2: {
+                name: "Amazon Basin Critical Zone",
+                dominantVegetation: { icon: "🌳", type: "Tropical Rainforest" },
+                data: {
+                    2024: { stress: 65, health: "System Degradation", class: "moderate" },
+                    2020: { stress: 55, health: "Moderate Decline", class: "moderate" },
+                    2016: { stress: 45, health: "Stable Operations", class: "healthy" },
+                    2014: { stress: 35, health: "Optimal Function", class: "healthy" }
+                },
                 plants: ["🌳 Tropical Canopy", "🌿 Medicinal Flora", "🌺 Endemic Species", "🦋 Pollinator Network"],
-                suggestions: ["Activate emergency conservation protocols", "Deploy deforestation monitoring satellites", "Implement indigenous protection programs", "Launch carbon offset initiatives"],
+                suggestions: [
+                    "Activate emergency conservation protocols",
+                    "Deploy deforestation monitoring satellites",
+                    "Implement indigenous protection programs",
+                    "Launch carbon offset initiatives"
+                ],
+                prediction: {
+                    trend: "negative",
+                    text: "ALERT: Deforestation rates exceed sustainable thresholds. Without immediate intervention, stress levels projected to increase 12% within mission timeframe."
+                }
             },
-            "Sahara Desert": {
-                name: "Sahara Expansion Zone", dominantVegetation: { icon: "🌵", type: "Desert Biome" },
+            zone3: {
+                name: "Sahara Expansion Zone",
+                dominantVegetation: { icon: "🌵", type: "Desert Biome" },
+                data: {
+                    2024: { stress: 85, health: "Critical System Failure", class: "danger" },
+                    2020: { stress: 80, health: "Severe Degradation", class: "danger" },
+                    2016: { stress: 75, health: "System Stress", class: "danger" },
+                    2014: { stress: 70, health: "Declining Function", class: "danger" }
+                },
                 plants: ["🌵 Desert Adaptation", "🌿 Xerophytic Species", "🦎 Arid Ecosystem"],
-                suggestions: ["Deploy desert regreening technology", "Activate solar collection arrays", "Implement water conservation protocols", "Launch climate adaptation research"],
+                suggestions: [
+                    "Deploy desert regreening technology",
+                    "Activate solar collection arrays",
+                    "Implement water conservation protocols",
+                    "Launch climate adaptation research"
+                ],
+                prediction: {
+                    trend: "negative",
+                    text: "CRITICAL: Accelerating desertification detected. Climate stress projected to increase 15% without major terraforming intervention."
+                }
             },
-            "European Forests": {
-                name: "European Climate Sanctuary", dominantVegetation: { icon: "🌳", type: "Temperate Forest" },
+            zone4: {
+                name: "European Climate Sanctuary",
+                dominantVegetation: { icon: "🌳", type: "Temperate Forest" },
+                data: {
+                    2024: { stress: 30, health: "Managed Ecosystem", class: "healthy" },
+                    2020: { stress: 25, health: "Stable Operations", class: "healthy" },
+                    2016: { stress: 22, health: "Optimal Performance", class: "healthy" },
+                    2014: { stress: 18, health: "Peak Efficiency", class: "healthy" }
+                },
                 plants: ["🌳 Temperate Hardwoods", "🍂 Seasonal Adaptation", "🌿 Managed Understory", "🐝 Pollinator Hubs"],
-                suggestions: ["Maintain Green Deal protocols", "Expand renewable energy grid", "Deploy urban forest networks", "Activate carbon neutrality systems"],
+                suggestions: [
+                    "Maintain Green Deal protocols",
+                    "Expand renewable energy grid",
+                    "Deploy urban forest networks",
+                    "Activate carbon neutrality systems"
+                ],
+                prediction: {
+                    trend: "positive",
+                    text: "SUCCESS: Environmental policies showing measurable results. Ecosystem stress projected to decrease 5% through continued conservation efforts."
+                }
             },
-            "Siberian Taiga": {
-                name: "Siberian Taiga Monitoring Zone", dominantVegetation: { icon: "🌲", type: "Boreal Taiga" },
+            zone5: {
+                name: "Siberian Taiga Monitoring Zone",
+                dominantVegetation: { icon: "🌲", type: "Boreal Taiga" },
+                data: {
+                    2024: { stress: 50, health: "Climate Adaptation", class: "moderate" },
+                    2020: { stress: 45, health: "Moderate Stress", class: "moderate" },
+                    2016: { stress: 35, health: "Stable Function", class: "healthy" },
+                    2014: { stress: 30, health: "Optimal State", class: "healthy" }
+                },
                 plants: ["🌲 Boreal Conifers", "❄️ Permafrost Flora", "🐻 Arctic Megafauna", "🌨️ Tundra Transition"],
-                suggestions: ["Deploy permafrost monitoring arrays", "Activate wildfire suppression systems", "Implement carbon sink protection", "Launch Arctic research stations"],
+                suggestions: [
+                    "Deploy permafrost monitoring arrays",
+                    "Activate wildfire suppression systems",
+                    "Implement carbon sink protection",
+                    "Launch Arctic research stations"
+                ],
+                prediction: {
+                    trend: "negative",
+                    text: "WARNING: Rapid warming detected in permafrost zones. Stress levels may increase 10% due to accelerating climate feedback loops."
+                }
             },
-            "SE Asian Rainforests": {
-                name: "Southeast Asian Biodiversity Hotspot", dominantVegetation: { icon: "🌴", type: "Tropical Palms" },
+            zone6: {
+                name: "Southeast Asian Biodiversity Hotspot",
+                dominantVegetation: { icon: "🌴", type: "Tropical Palms" },
+                data: {
+                    2024: { stress: 75, health: "Ecosystem Collapse Risk", class: "danger" },
+                    2020: { stress: 70, health: "Severe Degradation", class: "danger" },
+                    2016: { stress: 60, health: "System Stress", class: "moderate" },
+                    2014: { stress: 50, health: "Moderate Function", class: "moderate" }
+                },
                 plants: ["🌴 Tropical Palms", "🌺 Endemic Orchids", "🦧 Primate Habitats", "🐅 Apex Predators"],
-                suggestions: ["Emergency biodiversity protection", "Deploy anti-deforestation satellites", "Activate species preservation protocols", "Launch sustainable development programs"],
+                suggestions: [
+                    "Emergency biodiversity protection",
+                    "Deploy anti-deforestation satellites",
+                    "Activate species preservation protocols",
+                    "Launch sustainable development programs"
+                ],
+                prediction: {
+                    trend: "negative",
+                    text: "CRITICAL ALERT: Biodiversity loss accelerating. Without immediate action, stress could increase 18% threatening entire ecosystem collapse."
+                }
             },
-            "Australian Outback": {
-                name: "Australian Continental Monitoring", dominantVegetation: { icon: "🌿", type: "Scrubland" },
+            zone7: {
+                name: "Australian Continental Monitoring",
+                dominantVegetation: { icon: "🌿", type: "Scrubland" },
+                data: {
+                    2024: { stress: 80, health: "Fire Recovery Phase", class: "danger" },
+                    2020: { stress: 75, health: "Post-Fire Trauma", class: "danger" },
+                    2016: { stress: 65, health: "Drought Stress", class: "moderate" },
+                    2014: { stress: 55, health: "Stable Arid System", class: "moderate" }
+                },
                 plants: ["🌿 Fire-Adapted Flora", "🦘 Marsupial Habitats", "🌳 Eucalyptus Groves", "🔥 Recovery Zones"],
-                suggestions: ["Deploy fire prevention satellites", "Activate species recovery programs", "Implement water security protocols", "Launch climate resilience initiatives"],
+                suggestions: [
+                    "Deploy fire prevention satellites",
+                    "Activate species recovery programs",
+                    "Implement water security protocols",
+                    "Launch climate resilience initiatives"
+                ],
+                prediction: {
+                    trend: "negative",
+                    text: "MONITORING: Extreme weather events increasing. Recovery efforts ongoing but stress levels may rise 12% due to climate intensification."
+                }
             },
-            "African Savanna": {
-                name: "African Savanna Corridor", dominantVegetation: { icon: "🌾", type: "Grassland Savanna" },
+            zone8: {
+                name: "African Savanna Corridor",
+                dominantVegetation: { icon: "🌾", type: "Grassland Savanna" },
+                data: {
+                    2024: { stress: 55, health: "Migration Adaptation", class: "moderate" },
+                    2020: { stress: 50, health: "Seasonal Stress", class: "moderate" },
+                    2016: { stress: 45, health: "Stable Ecosystem", class: "healthy" },
+                    2014: { stress: 40, health: "Optimal Function", class: "healthy" }
+                },
                 plants: ["🌳 Acacia Networks", "🦁 Apex Predators", "🌾 Grassland Matrix", "🐘 Megafauna Corridors"],
-                suggestions: ["Deploy wildlife tracking satellites", "Activate anti-poaching networks", "Implement water access systems", "Launch community conservation programs"],
+                suggestions: [
+                    "Deploy wildlife tracking satellites",
+                    "Activate anti-poaching networks",
+                    "Implement water access systems",
+                    "Launch community conservation programs"
+                ],
+                prediction: {
+                    trend: "positive",
+                    text: "PROGRESS: Conservation initiatives showing results. Community programs and wildlife protection expected to stabilize stress levels within 3%."
+                }
             },
-            "Arctic Tundra": {
-                name: "Arctic Ice Monitoring Station", dominantVegetation: { icon: "❄️", type: "Arctic Tundra" },
+            zone9: {
+                name: "Arctic Ice Monitoring Station",
+                dominantVegetation: { icon: "❄️", type: "Arctic Tundra" },
+                data: {
+                    2024: { stress: 70, health: "Rapid Ice Loss", class: "moderate" },
+                    2020: { stress: 60, health: "Accelerating Melt", class: "moderate" },
+                    2016: { stress: 45, health: "Seasonal Variation", class: "moderate" },
+                    2014: { stress: 35, health: "Stable Ice Sheet", class: "healthy" }
+                },
                 plants: ["❄️ Polar Vegetation", "🐻‍❄️ Arctic Megafauna", "🌨️ Tundra Ecosystems", "🧊 Ice-Dependent Species"],
-                suggestions: ["Deploy ice monitoring satellites", "Activate polar bear protection", "Implement carbon reduction protocols", "Launch Arctic research missions"],
+                suggestions: [
+                    "Deploy ice monitoring satellites",
+                    "Activate polar bear protection",
+                    "Implement carbon reduction protocols",
+                    "Launch Arctic research missions"
+                ],
+                prediction: {
+                    trend: "negative",
+                    text: "CRITICAL: Accelerating ice melt detected. Without global intervention, stress levels projected to increase 20% - tipping point approaching."
+                }
             },
+
         };
 
-        // Global variable to store the live EONET data results
-        let liveZoneData = {};
+        // Enhanced map interaction variables
+        let currentZoom = 1;
+        let currentYear = 2024;
+        let isDragging = false;
+        let startX, startY, currentX = 0, currentY = 0;
 
-        // --- Geolocation Utility ---
+        // Initialize enhanced map
+        const earthImage = document.getElementById('earthImage');
+        const sidebar = document.getElementById('sidebar');
+        const timeSlider = document.getElementById('timeSlider');
+        const currentYearSpan = document.getElementById('currentYear');
 
-        function isPointInBBox(lon, lat, bbox) {
-            const [minLon, minLat, maxLon, maxLat] = bbox;
-            return lon >= minLon && lon <= maxLon && lat >= minLat && lat <= maxLat;
-        }
+        // Enhanced time slider with space-age effects
+        timeSlider.addEventListener('input', (e) => {
+            currentYear = parseInt(e.target.value);
+            currentYearSpan.textContent = currentYear;
+            updateMapForYear(currentYear);
+            
+            // Add temporal scanning effect
+            document.querySelectorAll('.zone').forEach(zone => {
+                zone.style.animation = 'none';
+                setTimeout(() => {
+                    zone.style.animation = 'pulse 2s infinite';
+                }, 100);
+            });
+        });
 
-        function isEventInBBox(geometry, bbox) {
-            if (!geometry) return false;
-
-            for (const geo of geometry) {
-                const coords = geo.coordinates;
-                const type = geo.type;
-
-                if (type === 'Point' && coords.length === 2) {
-                    if (isPointInBBox(coords[0], coords[1], bbox)) return true;
-                } else if (type === 'Polygon' && coords.length > 0) {
-                    // Check if any part of the polygon is in the BBOX (simplified)
-                    for (const ring of coords) {
-                        for (const coordPair of ring) {
-                            if (isPointInBBox(coordPair[0], coordPair[1], bbox)) return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        // --- Core Data Fetching and Stress Calculation ---
-
-        async function fetchAndCalculateStress() {
-            try {
-                const response = await fetch(EONET_API_URL);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                const events = data.events || [];
-
-                const results = {};
-
-                // 1. Initialize results structure for all zones
-                for (const zoneName in ZONES_BBOX) {
-                    results[zoneName] = {
-                        stressScore: 0,
-                        eventDetails: {},
-                        totalEvents: 0
-                    };
-                }
-
-                // 2. Process all events
-                for (const event of events) {
-                    const categoryName = event.categories[0]?.title || 'Uncategorized';
-                    const weight = SEVERITY_WEIGHTS[categoryName] || SEVERITY_WEIGHTS['Uncategorized'];
-
-                    // 3. Check for zone containment and accumulate score
-                    for (const zoneName in ZONES_BBOX) {
-                        if (isEventInBBox(event.geometries, ZONES_BBOX[zoneName])) {
-                            // Accumulate stress score
-                            results[zoneName].stressScore += weight;
-                            results[zoneName].totalEvents += 1;
-
-                            // Track event counts by category for the sidebar
-                            if (!results[zoneName].eventDetails[categoryName]) {
-                                results[zoneName].eventDetails[categoryName] = 0;
-                            }
-                            results[zoneName].eventDetails[categoryName] += 1;
-
-                            // Important: An event can overlap multiple zones, but to prevent
-                            // overcounting for the primary visualization, we break here.
-                            // EONET events often cover wide areas.
-                            break;
-                        }
-                    }
-                }
-
-                // 4. Determine class and health status (based on percentage)
-                for (const zoneName in results) {
-                    const score = results[zoneName].stressScore;
-
-                    // Normalize the raw score to a percentage based on MAX_STRESS_SCORE
-                    const stressPercentage = Math.min(100, Math.round((score / MAX_STRESS_SCORE) * 100));
-
-                    let healthStatus = "Optimal Ecosystem Performance";
-                    let cssClass = "healthy";
-
-                    if (stressPercentage > 30) {
-                        cssClass = "danger";
-                        healthStatus = "CRITICAL: High Cumulative Stress Detected";
-                    } else if (stressPercentage > 15) {
-                        cssClass = "moderate";
-                        healthStatus = "WARNING: Moderate Stress Zone";
-                    } else {
-                        cssClass = "healthy";
-                        healthStatus = "Optimal Ecosystem Performance";
-                    }
-
-                    results[zoneName].stressPercentage = stressPercentage; // Store percentage
-                    results[zoneName].health = healthStatus;
-                    results[zoneName].class = cssClass;
-                }
-
-                liveZoneData = results;
-                updateMapVisualization();
-
-            } catch (error) {
-                console.error("EONET API or calculation failed:", error);
-                document.getElementById('stressPercent').textContent = "ERROR: Failed to load live EONET data.";
-            }
-        }
-
-        // --- Visualization & Interaction ---
-
-        function updateMapVisualization() {
-            document.querySelectorAll('.zone').forEach(zoneElement => {
-                const zoneName = zoneElement.getAttribute('data-zone');
-                const data = liveZoneData[zoneName];
-
+        function updateMapForYear(year) {
+            Object.keys(zoneData).forEach(zoneId => {
+                const zone = document.getElementById(zoneId);
+                const data = zoneData[zoneId].data[year];
                 if (data) {
-                    // Update CSS class for color/pulse
-                    zoneElement.className = `zone ${data.class}`;
-
-                    // Dynamic Size: Scale by event count (e.g., 40px base + 2px per event up to a max)
-                    const baseSize = 40;
-                    const maxEvents = 50;
-                    const size = Math.min(baseSize + data.totalEvents * 2, baseSize + maxEvents * 2);
-                    zoneElement.style.width = `${size}px`;
-                    zoneElement.style.height = `${size}px`;
-                    zoneElement.style.lineHeight = `${size}px`;
-
-                    zoneElement.title = `${zoneName}: ${data.health} (Stress: ${data.stressPercentage}%, Raw Score: ${data.stressScore}, Events: ${data.totalEvents})`;
+                    zone.className = `zone ${data.class}`;
                 }
             });
-            document.getElementById('stressPercent').textContent = "LIVE EONET DATA LOADED.";
-            document.getElementById('controls').style.display = 'block';
         }
 
-        function showZoneInfo(zoneElement) {
-            const zoneName = zoneElement.getAttribute('data-zone');
-            const liveData = liveZoneData[zoneName];
-            const staticData = STATIC_ZONE_DATA[zoneName];
+        // Enhanced zone interaction with NASA-style effects
+        document.querySelectorAll('.zone').forEach(zone => {
+            zone.addEventListener('click', (e) => {
+                const zoneId = e.target.id;
+                const data = zoneData[zoneId];
+                if (data) {
+                    // Add scanning effect
+                    zone.style.transform = 'scale(1.3)';
+                    setTimeout(() => {
+                        zone.style.transform = '';
+                    }, 300);
+                    
+                    // Show temporal controls when zone is clicked
+                    document.getElementById('controls').style.display = 'block';
+                    
+                    showZoneInfo(data, zoneId);
+                }
+            });
+        });
 
-            if (!liveData || !staticData) return;
-
-            // 1. Update Zone Name
-            document.getElementById('zoneName').textContent = `🛰️ ${staticData.name}`;
-
-            // 2. Stress Analysis
+        function showZoneInfo(data, zoneId) {
+            const yearData = data.data[currentYear];
+            
+            // Update sidebar with NASA-style formatting
+            document.getElementById('zoneName').textContent = `🛰️ ${data.name}`;
+            
+            // Enhanced stress level display
             const stressFill = document.getElementById('stressFill');
-            const stressPercentElement = document.getElementById('stressPercent');
-
-            // Use the pre-calculated percentage
-            const percentage = liveData.stressPercentage;
-            const score = liveData.stressScore;
-
-            stressFill.style.width = `${percentage}%`;
-
-            // Dynamic color logic for the fill bar
-            if (percentage > 30) {
+            const stressPercent = document.getElementById('stressPercent');
+            stressFill.style.width = `${yearData.stress}%`;
+            
+            // Dynamic color based on stress level
+            if (yearData.stress > 60) {
                 stressFill.style.background = 'linear-gradient(90deg, #ff0000 0%, #ff6600 100%)';
-            } else if (percentage > 15) {
+            } else if (yearData.stress > 40) {
                 stressFill.style.background = 'linear-gradient(90deg, #ffaa00 0%, #ffdd00 100%)';
             } else {
                 stressFill.style.background = 'linear-gradient(90deg, #00ff00 0%, #66ff66 100%)';
             }
-
-            stressPercentElement.textContent = `${percentage}% STRESS LEVEL - ${liveData.health.toUpperCase()} (Raw Score: ${score})`;
-
-            // 3. Event Summary
-            const eventDetails = liveData.eventDetails;
-            let eventHtml = '';
-
-            if (liveData.totalEvents > 0) {
-                eventHtml += `<p>Total Open Events: <strong>${liveData.totalEvents}</strong></p><ul>`;
-                for (const category in eventDetails) {
-                    eventHtml += `<li>${category}: <strong>${eventDetails[category]}</strong> (Weight: ${SEVERITY_WEIGHTS[category] || 1})</li>`;
-                }
-                eventHtml += '</ul>';
-            } else {
-                eventHtml = '<p>No recent EONET events detected in this zone.</p>';
-            }
-            document.getElementById('eventSummary').innerHTML = eventHtml;
-
-            // 4. Biosphere Health (Static Descriptive Data)
+            
+            stressPercent.textContent = `${yearData.stress}% STRESS LEVEL - ${yearData.health.toUpperCase()}`;
+            
+            // Update plant health with space formatting
             document.getElementById('plantHealth').innerHTML = `
                 <div class="dominant-vegetation">
-                    <div class="icon">${staticData.dominantVegetation.icon}</div>
-                    <div class="label">${staticData.dominantVegetation.type}</div>
+                    <div class="icon">${data.dominantVegetation.icon}</div>
+                    <div class="label">${data.dominantVegetation.type}</div>
                 </div>
-                System Status: ${liveData.health}
+                System Status: ${yearData.health}
             `;
-
+            
+            // Enhanced plant legend
             const plantLegend = document.getElementById('plantLegend');
-            plantLegend.innerHTML = staticData.plants.map(plant =>
+            plantLegend.innerHTML = data.plants.map(plant => 
                 `<div class="plant-item">${plant}</div>`
             ).join('');
-
-            // 5. Mission-style Suggestions (Static Descriptive Data)
+            
+            // Mission-style suggestions
             const suggestions = document.getElementById('suggestions');
-            suggestions.innerHTML = staticData.suggestions.map(suggestion =>
+            suggestions.innerHTML = data.suggestions.map(suggestion => 
                 `<li>🚀 ${suggestion}</li>`
             ).join('');
-
+            
+            // Enhanced prediction display
+            const prediction = document.getElementById('prediction');
+            prediction.className = `prediction ${data.prediction.trend}`;
+            prediction.innerHTML = `<p><strong>AI ANALYSIS:</strong> ${data.prediction.text}</p>`;
+            
             // Show sidebar with animation
             sidebar.classList.add('active');
         }
 
-
-        // --- Original Pan/Zoom/UI Controls (Kept intact) ---
-
-        let currentZoom = 1;
-        let isDragging = false;
-        let startX, startY, currentX = 0, currentY = 0;
-
-        const earthImage = document.getElementById('earthImage');
-        const sidebar = document.getElementById('sidebar');
-
-        // Zone Click Handler
-        document.querySelectorAll('.zone').forEach(zone => {
-            zone.addEventListener('click', (e) => {
-                showZoneInfo(e.target);
-            });
-        });
-
-        // Close Sidebar Handler
+        // Enhanced close functionality
         document.getElementById('closeSidebar').addEventListener('click', () => {
             sidebar.classList.remove('active');
+            document.getElementById('controls').style.display = 'none';
         });
 
-        // Zoom Controls
+        // Enhanced zoom controls with space effects
         document.getElementById('zoomIn').addEventListener('click', () => {
             currentZoom = Math.min(currentZoom * 1.3, 4);
             updateMapTransform();
@@ -978,7 +986,7 @@
             updateMapTransform();
         });
 
-        // Pan/Drag Functionality
+        // Enhanced pan functionality
         earthImage.addEventListener('mousedown', (e) => {
             isDragging = true;
             startX = e.clientX - currentX;
@@ -998,7 +1006,7 @@
             earthImage.style.cursor = 'grab';
         });
 
-        // Wheel Zoom
+        // Enhanced wheel zoom
         earthImage.addEventListener('wheel', (e) => {
             e.preventDefault();
             const delta = e.deltaY > 0 ? 0.9 : 1.1;
@@ -1008,26 +1016,26 @@
 
         function updateMapTransform() {
             earthImage.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentZoom})`;
-
+            
             // Update zone overlay to match map transform
             const zoneOverlay = document.querySelector('.zone-overlay');
             zoneOverlay.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentZoom})`;
         }
 
-        // Initialize dynamic data fetching on load
-        fetchAndCalculateStress();
-
-        // Add periodic satellite data updates (original function)
+        // Initialize with current year data and space effects
+        updateMapForYear(currentYear);
+        
+        // Add periodic satellite data updates
         setInterval(() => {
             const dataStream = document.querySelector('.data-stream');
             const speed = (Math.random() * 200 + 700).toFixed(1);
             dataStream.textContent = `DATA STREAM: ${speed} MB/s`;
         }, 2000);
 
-        // Create beautiful floating particles (original function)
+        // Create beautiful floating particles
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
-
+            
             for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
@@ -1041,5 +1049,5 @@
         // Initialize particles
         createParticles();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98941920003ae30e',t:'MTc1OTU3NDgxNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
