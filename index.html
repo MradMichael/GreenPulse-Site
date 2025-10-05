@@ -16,7 +16,39 @@
             overflow: hidden;
             position: relative;
         }
-
+   /*ADDED*/
+        .api-banner {
+    position: absolute;
+    left: 20px;
+    bottom: 140px; /* sits above the legend which is at bottom:20px */
+    background: linear-gradient(135deg, rgba(0,60,30,0.95) 0%, rgba(0,120,60,0.9) 100%);
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #00ff88;
+    box-shadow: 0 0 18px rgba(0,255,160,0.25);
+    z-index: 101; /* a hair above the legend */
+    max-width: 320px;
+    backdrop-filter: blur(8px);
+    font-family: 'Exo 2', sans-serif;
+}
+.api-banner h4 {
+    margin: 0 0 6px 0;
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #90ff90;
+    text-transform: uppercase;
+    text-shadow: 0 0 6px rgba(144,255,144,0.4);
+}
+.api-banner p {
+    margin: 0;
+    font-size: 12px;
+    color: #eaffea;
+    line-height: 1.35;
+    opacity: 0.95;
+}
+ /*ADDED*/
+        
         /* Animated starfield background */
         .starfield {
             position: fixed;
@@ -585,7 +617,7 @@
                 <div class="zone healthy" id="zone4" style="top: 25%; left: 48%; width: 60px; height: 60px;" data-zone="European Forests" data-base-size="60">🌳</div>
                 <div class="zone moderate" id="zone5" style="top: 18%; left: 60%; width: 100px; height: 100px;" data-zone="Siberian Taiga" data-base-size="100">🌲</div>
                 <div class="zone danger" id="zone6" style="top: 40%; left: 75%; width: 75px; height: 75px;" data-zone="SE Asian Rainforests" data-base-size="75">🌴</div>
-                <div class="zone danger" id="zone7" style="top: 65%; left: 75%; width: 85px; height: 85px;" data-zone="Australian Outback" data-base-size="85">🌿</div>
+                <div class="zone danger" id="zone7" style="top: 64%; left: 87%; width: 85px; height: 85px;" data-zone="Australian Outback" data-base-size="85">🌿</div>
                 <div class="zone moderate" id="zone8" style="top: 45%; left: 50%; width: 80px; height: 80px;" data-zone="African Savanna" data-base-size="80">🌾</div>
                 <div class="zone moderate" id="zone9" style="top: 8%; left: 20%; width: 120px; height: 60px;" data-zone="Arctic Tundra" data-base-size="120">❄️</div>
                 <div class="zone moderate" id="zone10" style="top: 33%; left: 58%; width: 85px; height: 85px;" data-zone="Middle East Arid Belt" data-base-size="85">🫒</div>
@@ -608,6 +640,12 @@
                 <button class="zoom-btn" id="zoomOut">−</button>
                 <button class="zoom-btn" id="resetZoom">🌍</button>
             </div>
+            /*ADDED*/
+            <div class="api-banner">
+                <h4>Planned Data Integration</h4>
+                <p>We are planning to use the NASA EONET API to automatically extract event data and populate these zones in near-real time.</p>
+            </div>
+            /*ADDED*/
             
             <div class="legend">
                 <h4>🌡️ Climate Stress Matrix</h4>
