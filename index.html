@@ -588,6 +588,8 @@
                 <div class="zone danger" id="zone7" style="top: 65%; left: 75%; width: 85px; height: 85px;" data-zone="Australian Outback" data-base-size="85">🌿</div>
                 <div class="zone moderate" id="zone8" style="top: 45%; left: 50%; width: 80px; height: 80px;" data-zone="African Savanna" data-base-size="80">🌾</div>
                 <div class="zone moderate" id="zone9" style="top: 8%; left: 20%; width: 120px; height: 60px;" data-zone="Arctic Tundra" data-base-size="120">❄️</div>
+                <div class="zone moderate" id="zone10"style="top: 33%; left: 58%; width: 85px; height: 85px;"  data-zone="Middle East Arid Belt" data-base-size="85">🫒</div>
+
 
             </div>
             
@@ -850,6 +852,34 @@
                     text: "CRITICAL: Accelerating ice melt detected. Without global intervention, stress levels projected to increase 20% - tipping point approaching."
                 }
             },
+                        ,
+            zone10: {
+                name: "Middle East Arid Belt",
+                dominantVegetation: { icon: "🫒", type: "Mediterranean & Arid Shrublands" },
+                data: {
+                    2024: { stress: 62, health: "Water Scarcity Pressure", class: "moderate" },
+                    2020: { stress: 58, health: "Heat & Drought Stress", class: "moderate" },
+                    2016: { stress: 50, health: "Seasonal Variability", class: "moderate" },
+                    2014: { stress: 44, health: "Managed Conditions", class: "healthy" }
+                },
+                plants: [
+                    "🌴 Date Palms & Oasis Flora",
+                    "🫒 Mediterranean Scrub/Olives",
+                    "🌾 Steppe Grasses",
+                    "🏜️ Halophytes (saline-tolerant)"
+                ],
+                suggestions: [
+                    "Scale drip irrigation and drought-resilient crops",
+                    "Expand desalination + solar coupling; reuse wastewater",
+                    "Dust-storm early warning with satellite aerosols",
+                    "Wildfire risk monitoring in Levant pine belts"
+                ],
+                prediction: {
+                    trend: "negative",
+                    text: "HEAT INTENSIFICATION: With rising temperature and precipitation variability, stress could climb ~8–10% absent efficiency gains in water use and heat-adapted agriculture."
+                }
+            }
+
 
         };
 
