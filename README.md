@@ -1,20 +1,33 @@
-# GreenPulse-Site
-Static website for Green Pulse; interactive climate map (HTML/CSS/JS).
-# GREEN PULSE 🌍
-Live NDVI-driven climate insight map with zone-based “stress” indicators.
+# Re-Tire Lebanon — website
 
-• [Live Demo](https://greenpulse.earth/)
-• Backup: mradmichael.github.io
+Static site. Loads as-is on GitHub Pages (no build step).
 
+## Structure
 
-What It Does
-- Interactive Leaflet map with NDVI overlay
-- Year slider updates tiles by date
-- Tap zones for stress score, vegetation, and recommendations
-- Mobile-friendly UI
+```
+.
+├── index.html        # markup
+├── css/
+│   └── styles.css    # all styling
+└── js/
+    └── main.js       # contact-form logic
+```
 
-How It Works
-- Front end: HTML/CSS/JS + Leaflet
-- Optional server proxy injects API key and handles CORS
-- Zone logic maps NDVI to stress bands (green/yellow/red)
+## Contact form
 
+The form works immediately: on submit it opens the visitor's e-mail app
+with every field pre-filled.
+
+To make it send in the background (no e-mail app, inline "thank you"):
+
+1. Create a free form at https://formspree.io (or Web3Forms / Getform).
+2. Copy the endpoint URL, e.g. `https://formspree.io/f/abcdwxyz`.
+3. In `js/main.js`, paste it into the `FORM_ENDPOINT` value near the top.
+
+Reply-to and notification address are set in `FALLBACK_EMAIL` (js/main.js)
+and in your Formspree dashboard.
+
+## Deploy (GitHub Pages)
+
+Push these files to the repo root, then enable
+**Settings → Pages → Deploy from branch → `main` / root**.
