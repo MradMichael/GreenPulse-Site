@@ -1511,6 +1511,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
 /* specimen watermark on proof documents */
 .coa .body, .origin-cert .body{ position:relative; overflow:hidden; }
 .coa .body > *, .origin-cert .body > *{ position:relative; z-index:1; }
+.origin-cert .seal{ position:absolute; z-index:2; }
 .coa .body::before, .origin-cert .body::before{
   content:"SPECIMEN"; position:absolute; top:50%; left:50%;
   transform:translate(-50%,-50%) rotate(-22deg);
@@ -2782,32 +2783,57 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
         <div class="label">Facility · LB-KSR-MTN-01</div>
         <h4>Keserwan-Matn Industrial Corridor</h4>
 
-        <!-- Stylised Lebanon map -->
-        <svg viewBox="0 0 280 320" width="100%" style="margin-bottom: 8px;">
+        <!-- Lebanon — coast, ports, and Keserwan-Matn corridor -->
+        <svg viewBox="0 0 280 320" width="100%" style="margin-bottom: 8px;" role="img" aria-label="Map of Lebanon showing the Keserwan-Matn corridor between Beirut and the coast">
           <!-- Mediterranean -->
-          <rect x="0" y="0" width="280" height="320" fill="#1B2A2E"/>
-          <!-- Sea wash -->
-          <rect x="0" y="0" width="60" height="320" fill="#0F1A1D"/>
-          <!-- Lebanon silhouette (stylised) -->
-          <path d="M60 40 L80 32 L100 30 L130 38 L170 50 L190 70 L210 95 L220 130 L218 170 L210 210 L195 240 L180 270 L160 290 L130 295 L100 280 L80 250 L70 210 L66 170 L62 130 L60 90 Z"
-                fill="#2A3B3F" stroke="#3A4A4E" stroke-width="0.5"/>
-          <!-- North line: Tripoli -->
-          <circle cx="105" cy="60" r="3" fill="#7CA48C"/>
-          <text x="115" y="62" font-family="JetBrains Mono, monospace" font-size="9" fill="#7CA48C">TRIPOLI · PORT</text>
-          <!-- Beirut -->
-          <circle cx="100" cy="180" r="3" fill="#7CA48C"/>
-          <text x="110" y="183" font-family="JetBrains Mono, monospace" font-size="9" fill="#7CA48C">BEIRUT · PORT</text>
-          <!-- The facility — Keserwan -->
+          <rect x="0" y="0" width="280" height="320" fill="#0F1A1D"/>
+          <text x="15" y="172" transform="rotate(-90 15 172)" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.5" letter-spacing="3" fill="#33474B">MEDITERRANEAN&#160;SEA</text>
+
+          <!-- Lebanon silhouette: coast on the west, tapering south, Beirut headland -->
+          <path d="M106 54 Q116 44 146 42 L170 52 L188 72 Q197 96 199 126 L199 158 Q197 184 188 210 L176 236 L162 262 L152 284 L144 260 L137 234 L131 210 Q118 200 101 186 Q113 170 114 150 L111 120 L108 86 Z"
+                fill="#26363A" stroke="#4C5F63" stroke-width="1"/>
+          <!-- inland border accent (Bekaa / mountains) -->
+          <path d="M150 60 L168 92 L172 132 L168 172 L156 210 L146 244" fill="none" stroke="#33474B" stroke-width="0.8" stroke-dasharray="2 3"/>
+
+          <!-- Keserwan-Matn corridor zone -->
+          <ellipse cx="124" cy="180" rx="20" ry="27" fill="rgba(124,164,140,0.06)" stroke="#7CA48C" stroke-width="0.9" stroke-dasharray="3 3" opacity="0.7"/>
+
+          <!-- Tripoli (north coast) -->
+          <circle cx="109" cy="82" r="3" fill="#7CA48C"/>
+          <text x="118" y="85" font-family="JetBrains Mono, monospace" font-size="9" fill="#7CA48C">TRIPOLI · PORT</text>
+
+          <!-- Beirut (mid-coast headland) -->
+          <circle cx="104" cy="186" r="3" fill="#7CA48C"/>
+          <text x="60" y="189" font-family="JetBrains Mono, monospace" font-size="9" fill="#7CA48C">BEIRUT · PORT</text>
+
+          <!-- Anchor compounder ~30 km -->
+          <circle cx="120" cy="202" r="2.4" fill="#EFEDE6"/>
+          <text x="128" y="205" font-family="JetBrains Mono, monospace" font-size="8" fill="#8A9A93">ANCHOR · 30 KM</text>
+
+          <!-- Re-Tire facility: Keserwan-Matn, NE of Beirut, inland -->
           <g>
-            <rect x="124" y="145" width="14" height="14" fill="none" stroke="#7CA48C" stroke-width="1.4"/>
-            <rect x="128" y="149" width="6" height="6" fill="#7CA48C"/>
-            <line x1="138" y1="152" x2="160" y2="152" stroke="#7CA48C" stroke-dasharray="2 2"/>
-            <text x="164" y="155" font-family="JetBrains Mono, monospace" font-size="9" fill="#7CA48C" font-weight="600">RE-TIRE</text>
-            <text x="164" y="166" font-family="JetBrains Mono, monospace" font-size="8" fill="#B8C2BD">KESERWAN-MATN</text>
+            <rect x="121" y="153" width="13" height="13" fill="none" stroke="#7CA48C" stroke-width="1.4"/>
+            <rect x="125" y="157" width="5" height="5" fill="#7CA48C"/>
+            <line x1="134" y1="159" x2="156" y2="159" stroke="#7CA48C" stroke-width="1" stroke-dasharray="2 2"/>
+            <text x="160" y="156" font-family="JetBrains Mono, monospace" font-size="9" fill="#7CA48C" font-weight="600">RE-TIRE</text>
+            <text x="160" y="167" font-family="JetBrains Mono, monospace" font-size="8" fill="#B8C2BD">KESERWAN-MATN</text>
           </g>
-          <!-- Anchor customer -->
-          <circle cx="118" cy="170" r="2.4" fill="#EFEDE6"/>
-          <text x="100" y="208" font-family="JetBrains Mono, monospace" font-size="8" fill="#8A9A93">ANCHOR · 30 KM</text>
+
+          <!-- North arrow -->
+          <g stroke="#7CA48C" fill="#7CA48C">
+            <line x1="256" y1="60" x2="256" y2="42" stroke-width="1.2"/>
+            <path d="M256 38 L252 47 L260 47 Z" stroke="none"/>
+            <text x="256" y="74" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" stroke="none">N</text>
+          </g>
+
+          <!-- Scale bar: 40 px ≈ 30 km -->
+          <g stroke="#8A9A93">
+            <line x1="18" y1="300" x2="58" y2="300" stroke-width="1.4"/>
+            <line x1="18" y1="296" x2="18" y2="304" stroke-width="1.2"/>
+            <line x1="58" y1="296" x2="58" y2="304" stroke-width="1.2"/>
+          </g>
+          <text x="18" y="314" font-family="JetBrains Mono, monospace" font-size="8" fill="#8A9A93">0</text>
+          <text x="58" y="314" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="8" fill="#8A9A93">30 km</text>
         </svg>
 
         <div class="stats">
@@ -2841,7 +2867,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
 
 <script>
 /* ============================================================
-   Re-Tire — contact form
+   Re-Tire Lebanon — contact form
    ------------------------------------------------------------
    Works two ways:
 
