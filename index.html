@@ -13,12 +13,13 @@
 <meta property="og:site_name" content="Re-Tire">
 <meta property="og:title" content="Re-Tire — Mesh you can specify. Origin you can prove.">
 <meta property="og:description" content="Mesh-graded crumb rubber, produced in Lebanon, classified to ASTM standards, shipped under Certificate of Analysis.">
-<!-- Once your domain is live, uncomment and set these to ABSOLUTE URLs for a richer card with an image: -->
-<!-- <meta property="og:url" content="https://YOUR-DOMAIN/"> -->
-<!-- <meta property="og:image" content="https://YOUR-DOMAIN/og-image.png"> -->
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="https://greenpulse.earth/">
+<meta property="og:image" content="https://greenpulse.earth/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Re-Tire — Mesh you can specify. Origin you can prove.">
 <meta name="twitter:description" content="Mesh-graded crumb rubber, produced in Lebanon, classified to ASTM standards, shipped under Certificate of Analysis.">
+<meta name="twitter:image" content="https://greenpulse.earth/og-image.png">
+<link rel="canonical" href="https://greenpulse.earth/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzBGMUExRCIvPjxnIHN0cm9rZT0iI0VGRURFNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSI0Ij48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjI3Ii8+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMTQiLz48L2c+PGxpbmUgeDE9IjUwIiB5MT0iOCIgeDI9IjUwIiB5Mj0iOTIiIHN0cm9rZT0iIzdDQTQ4QyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtZGFzaGFycmF5PSI2IDYiLz48ZyBmaWxsPSIjN0NBNDhDIj48Y2lyY2xlIGN4PSI2NCIgY3k9IjM4IiByPSIzIi8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMyIvPjxjaXJjbGUgY3g9IjY0IiBjeT0iNTgiIHI9IjMiLz48L2c+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNCIgZmlsbD0iIzdDQTQ4QyIvPjwvc3ZnPg==">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,6 +63,30 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  top: 0; left: 0;
+  width: auto; height: auto;
+  padding: 12px 20px;
+  background: var(--slate-900);
+  color: var(--bone-100);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  z-index: 9999;
+  outline: 2px solid var(--forest-300);
+  outline-offset: 2px;
+}
 body {
   background: var(--bone-50);
   color: var(--ink);
@@ -1362,6 +1387,7 @@ footer.bottom .brand-mini {
 .v2dark .dek { color: var(--slate-300); }
 .v2num { font-variant-numeric: tabular-nums; }
 .v2tbl { width: 100%; border-collapse: collapse; font-family: var(--font-mono); }
+.v2tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .v2tbl th { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-400); text-align: right; font-weight: 500; padding: 0 0 14px; border-bottom: 1px solid var(--slate-700); }
 .v2tbl th:first-child { text-align: left; }
 .v2tbl td { font-size: 14px; padding: 13px 0; border-bottom: 1px dotted var(--slate-700); text-align: right; color: var(--bone-100); }
@@ -1402,6 +1428,19 @@ footer.bottom .brand-mini {
   .telemetry .group { gap: 12px; }
   .process-line { grid-template-columns: 1fr; }
   .process-line .stage { border-right: 0; border-bottom: var(--rule) solid var(--slate-700); }
+  /* telemetry: second group overflows on small phones */
+  .telemetry .group:last-child { display: none; }
+  /* hero quick-stats: 2 columns fits better than 3 on phones */
+  .hero .quick-stats { grid-template-columns: repeat(2, 1fr); }
+  /* CoA results: drop spec + pass columns — too narrow on mobile */
+  .coa .results .row { grid-template-columns: 1fr 80px; }
+  .coa .results .row .spec,
+  .coa .results .row .ok { display: none; }
+  /* balance bar: tiny 7% segment overflows — hide labels, tighten padding */
+  .balance-bar .seg { padding: 0 8px; }
+  .balance-bar .seg .lbl { display: none; }
+  /* contact channels: single column is cleaner on small screens */
+  .contact .channels { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
@@ -1556,7 +1595,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
 </style>
 </head>
 <body>
-
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <!-- ============================================================
      TELEMETRY STRIP
 ============================================================ -->
@@ -1609,6 +1648,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
   <a href="#invest" class="cta">Request the Investor Brief →</a>
 </nav>
 
+<main id="main-content">
 <!-- ============================================================
      HERO
 ============================================================ -->
@@ -2479,7 +2519,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
         </div>
       </div>
       <!-- P&L table -->
-      <table class="v2tbl">
+      <div class="v2tbl-scroll"><table class="v2tbl">
         <thead><tr><th>Profit &amp; loss · USD</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr></thead>
         <tbody>
           <tr><td>Revenue</td><td class="v2num">453,600</td><td class="v2num">646,529</td><td class="v2num">775,835</td></tr>
@@ -2489,7 +2529,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
           <tr class="hi"><td>Net profit after tax</td><td class="v2num">(69,436)</td><td class="v2num">63,435</td><td class="v2num">117,999</td></tr>
           <tr><td>Net margin</td><td class="v2num">−15.3%</td><td class="v2num">9.8%</td><td class="v2num">15.2%</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <!-- investment metrics -->
@@ -2502,7 +2542,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
 
     <!-- three scenarios + verdict -->
     <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:44px; margin-top:48px; align-items:start;" class="v2col2">
-      <table class="v2tbl">
+      <div class="v2tbl-scroll"><table class="v2tbl">
         <thead><tr><th>Scenario · 5-yr</th><th>Pessimistic</th><th>Conservative</th><th>Optimistic</th></tr></thead>
         <tbody>
           <tr><td>NPV @ 30% WACC</td><td class="v2num">(470k)</td><td class="v2num">(8k)</td><td class="v2num" style="color:var(--forest-300);">+380k</td></tr>
@@ -2510,7 +2550,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
           <tr><td>Year-3 EBITDA</td><td class="v2num">2,482</td><td class="v2num">178,038</td><td class="v2num">318,218</td></tr>
           <tr><td>First EBITDA-positive</td><td class="v2num">Year 3</td><td class="v2num">Year 2</td><td class="v2num" style="color:var(--forest-300);">Year 1</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <div style="border-left:2px solid var(--forest-500); padding:6px 0 6px 28px;">
         <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--forest-300); margin-bottom:16px;">Financial position</div>
         <p style="font-size:18px; line-height:1.6; color:var(--slate-200);">The model is built bottom-up at a 30% cost of capital reflecting Lebanon's country-risk premium, placing the conservative base case close to its hurdle rate. It is deliberately built on three foundations the headline metrics under-weight: a <b style="color:var(--bone-100); font-weight:600;">grant-weighted capital structure</b>, <b style="color:var(--bone-100); font-weight:600;">GAFTA export reach</b>, and the <b style="color:var(--bone-100); font-weight:600;">Phase 2 reconstruction pipeline</b>, which the base case excludes entirely.</p>
@@ -2847,6 +2887,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
     </div>
   </div>
 </section>
+</main>
 
 <!-- ============================================================
      FOOTER
