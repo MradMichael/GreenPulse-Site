@@ -1387,6 +1387,7 @@ footer.bottom .brand-mini {
 .v2dark .dek { color: var(--slate-300); }
 .v2num { font-variant-numeric: tabular-nums; }
 .v2tbl { width: 100%; border-collapse: collapse; font-family: var(--font-mono); }
+.v2tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .v2tbl th { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate-400); text-align: right; font-weight: 500; padding: 0 0 14px; border-bottom: 1px solid var(--slate-700); }
 .v2tbl th:first-child { text-align: left; }
 .v2tbl td { font-size: 14px; padding: 13px 0; border-bottom: 1px dotted var(--slate-700); text-align: right; color: var(--bone-100); }
@@ -1427,6 +1428,19 @@ footer.bottom .brand-mini {
   .telemetry .group { gap: 12px; }
   .process-line { grid-template-columns: 1fr; }
   .process-line .stage { border-right: 0; border-bottom: var(--rule) solid var(--slate-700); }
+  /* telemetry: second group overflows on small phones */
+  .telemetry .group:last-child { display: none; }
+  /* hero quick-stats: 2 columns fits better than 3 on phones */
+  .hero .quick-stats { grid-template-columns: repeat(2, 1fr); }
+  /* CoA results: drop spec + pass columns — too narrow on mobile */
+  .coa .results .row { grid-template-columns: 1fr 80px; }
+  .coa .results .row .spec,
+  .coa .results .row .ok { display: none; }
+  /* balance bar: tiny 7% segment overflows — hide labels, tighten padding */
+  .balance-bar .seg { padding: 0 8px; }
+  .balance-bar .seg .lbl { display: none; }
+  /* contact channels: single column is cleaner on small screens */
+  .contact .channels { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
@@ -2505,7 +2519,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
         </div>
       </div>
       <!-- P&L table -->
-      <table class="v2tbl">
+      <div class="v2tbl-scroll"><table class="v2tbl">
         <thead><tr><th>Profit &amp; loss · USD</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr></thead>
         <tbody>
           <tr><td>Revenue</td><td class="v2num">453,600</td><td class="v2num">646,529</td><td class="v2num">775,835</td></tr>
@@ -2515,7 +2529,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
           <tr class="hi"><td>Net profit after tax</td><td class="v2num">(69,436)</td><td class="v2num">63,435</td><td class="v2num">117,999</td></tr>
           <tr><td>Net margin</td><td class="v2num">−15.3%</td><td class="v2num">9.8%</td><td class="v2num">15.2%</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <!-- investment metrics -->
@@ -2528,7 +2542,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
 
     <!-- three scenarios + verdict -->
     <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:44px; margin-top:48px; align-items:start;" class="v2col2">
-      <table class="v2tbl">
+      <div class="v2tbl-scroll"><table class="v2tbl">
         <thead><tr><th>Scenario · 5-yr</th><th>Pessimistic</th><th>Conservative</th><th>Optimistic</th></tr></thead>
         <tbody>
           <tr><td>NPV @ 30% WACC</td><td class="v2num">(470k)</td><td class="v2num">(8k)</td><td class="v2num" style="color:var(--forest-300);">+380k</td></tr>
@@ -2536,7 +2550,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
           <tr><td>Year-3 EBITDA</td><td class="v2num">2,482</td><td class="v2num">178,038</td><td class="v2num">318,218</td></tr>
           <tr><td>First EBITDA-positive</td><td class="v2num">Year 3</td><td class="v2num">Year 2</td><td class="v2num" style="color:var(--forest-300);">Year 1</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <div style="border-left:2px solid var(--forest-500); padding:6px 0 6px 28px;">
         <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--forest-300); margin-bottom:16px;">Financial position</div>
         <p style="font-size:18px; line-height:1.6; color:var(--slate-200);">The model is built bottom-up at a 30% cost of capital reflecting Lebanon's country-risk premium, placing the conservative base case close to its hurdle rate. It is deliberately built on three foundations the headline metrics under-weight: a <b style="color:var(--bone-100); font-weight:600;">grant-weighted capital structure</b>, <b style="color:var(--bone-100); font-weight:600;">GAFTA export reach</b>, and the <b style="color:var(--bone-100); font-weight:600;">Phase 2 reconstruction pipeline</b>, which the base case excludes entirely.</p>
