@@ -13,12 +13,13 @@
 <meta property="og:site_name" content="Re-Tire">
 <meta property="og:title" content="Re-Tire — Mesh you can specify. Origin you can prove.">
 <meta property="og:description" content="Mesh-graded crumb rubber, produced in Lebanon, classified to ASTM standards, shipped under Certificate of Analysis.">
-<!-- Once your domain is live, uncomment and set these to ABSOLUTE URLs for a richer card with an image: -->
-<!-- <meta property="og:url" content="https://YOUR-DOMAIN/"> -->
-<!-- <meta property="og:image" content="https://YOUR-DOMAIN/og-image.png"> -->
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="https://greenpulse.earth/">
+<meta property="og:image" content="https://greenpulse.earth/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Re-Tire — Mesh you can specify. Origin you can prove.">
 <meta name="twitter:description" content="Mesh-graded crumb rubber, produced in Lebanon, classified to ASTM standards, shipped under Certificate of Analysis.">
+<meta name="twitter:image" content="https://greenpulse.earth/og-image.png">
+<link rel="canonical" href="https://greenpulse.earth/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzBGMUExRCIvPjxnIHN0cm9rZT0iI0VGRURFNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSI0Ij48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjI3Ii8+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMTQiLz48L2c+PGxpbmUgeDE9IjUwIiB5MT0iOCIgeDI9IjUwIiB5Mj0iOTIiIHN0cm9rZT0iIzdDQTQ4QyIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtZGFzaGFycmF5PSI2IDYiLz48ZyBmaWxsPSIjN0NBNDhDIj48Y2lyY2xlIGN4PSI2NCIgY3k9IjM4IiByPSIzIi8+PGNpcmNsZSBjeD0iNzIiIGN5PSI0OCIgcj0iMyIvPjxjaXJjbGUgY3g9IjY0IiBjeT0iNTgiIHI9IjMiLz48L2c+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNCIgZmlsbD0iIzdDQTQ4QyIvPjwvc3ZnPg==">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,6 +63,30 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  top: 0; left: 0;
+  width: auto; height: auto;
+  padding: 12px 20px;
+  background: var(--slate-900);
+  color: var(--bone-100);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  z-index: 9999;
+  outline: 2px solid var(--forest-300);
+  outline-offset: 2px;
+}
 body {
   background: var(--bone-50);
   color: var(--ink);
@@ -1556,7 +1581,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
 </style>
 </head>
 <body>
-
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <!-- ============================================================
      TELEMETRY STRIP
 ============================================================ -->
@@ -1609,6 +1634,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
   <a href="#invest" class="cta">Request the Investor Brief →</a>
 </nav>
 
+<main id="main-content">
 <!-- ============================================================
      HERO
 ============================================================ -->
@@ -2847,6 +2873,7 @@ nav.primary.open .nav-toggle span:nth-child(3){ transform:translateY(-7px) rotat
     </div>
   </div>
 </section>
+</main>
 
 <!-- ============================================================
      FOOTER
